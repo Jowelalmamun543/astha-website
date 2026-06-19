@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Astha - আস্থা | বিশ্বাসের ঠিকানা</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" rel="stylesheet"/>
+<style>
+:root {
+  --green:#1a7a3c; --green-dark:#145f2e; --green-light:#e8f5ee;
+  --blue:#1D5C87; --blue-dark:#154467; --yellow:#f5a623;
+  --red:#e74c3c; --gray:#f4f4f4; --shadow:0 2px 12px rgba(0,0,0,.10);
+}
+*{font-family:'Hind Siliguri',sans-serif;box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--gray);color:#222;}
+a{text-decoration:none;color:inherit;}
+
+/* POPUP */
+#popup-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;}
+#popup{background:white;border-radius:20px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);overflow:hidden;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);margin:auto;}
+@keyframes popIn{from{transform:scale(.85) translateY(20px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.popup-hdr{background:linear-gradient(135deg,var(--blue),var(--green));padding:20px;text-align:center;}
+.popup-hdr h1{color:white;font-size:26px;font-weight:800;}
+.popup-hdr h1 span{color:var(--yellow);}
+.popup-hdr p{color:rgba(255,255,255,.85);font-size:13px;margin-top:4px;}
+.popup-body{padding:20px;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--blue);margin-bottom:5px;}
+.field select{width:100%;padding:11px 13px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:'Hind Siliguri',sans-serif;color:#333;outline:none;transition:border .2s;}
+.field select:focus{border-color:var(--green);}
+.field select:disabled{background:#f9f9f9;color:#aaa;}
+.popup-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--blue));color:white;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Hind Siliguri',sans-serif;cursor:pointer;margin-top:4px;}
+.popup-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* TIME BANNER */
+.time-banner{background:linear-gradient(135deg,#1a7a3c,#154467);padding:10px 14px;text-align:center;color:white;font-size:13px;font-weight:600;overflow:hidden;white-space:nowrap;}
+.time-slide{display:inline-block;animation:slideTime 16s linear infinite;}
+.time-slide span{color:var(--yellow);}
+@keyframes slideTime{
+  0%{transform:translateX(100%);}
+  10%{transform:translateX(0%);}
+  90%{transform:translateX(0%);}
+  100%{transform:translateX(-100%);}
+}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--blue),var(--blue-dark));position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:8px;}
+.logo { display:flex; align-items:center; gap:6px; }
+.logo-text { font-size:20px; font-weight:800; color:white; letter-spacing:.5px; }
+.logo-text span { color:var(--yellow); }
+.logo-icon { width:32px; height:32px; background:var(--yellow); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.union-badge{background:var(--yellow);color:var(--blue-dark);font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;cursor:pointer;white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis;}
+.login-btn{color:white;font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px;}
+.menu-btn{color:white;font-size:22px;background:none;border:none;cursor:pointer;}
+.search-bar{padding:0 14px 10px;display:flex;gap:8px;}
+.search-bar input{flex:1;padding:10px 14px;border:none;border-radius:10px 0 0 10px;font-size:14px;font-family:'Hind Siliguri',sans-serif;outline:none;}
+.search-bar button{background:var(--yellow);color:var(--blue-dark);border:none;padding:10px 16px;border-radius:0 10px 10px 0;font-size:16px;cursor:pointer;}
+
+/* DRAWER */
+#drawer{position:fixed;top:0;left:0;height:100%;width:260px;background:white;transform:translateX(-100%);transition:transform .3s ease;z-index:200;box-shadow:4px 0 20px rgba(0,0,0,.15);overflow-y:auto;}
+#drawer.open{transform:translateX(0);}
+.drawer-hdr{background:linear-gradient(135deg,var(--green),var(--blue));padding:18px 16px;display:flex;align-items:center;justify-content:space-between;}
+.drawer-hdr h2{color:white;font-size:18px;font-weight:800;}
+.drawer-hdr h2 span{color:var(--yellow);}
+.drawer-close{color:white;font-size:20px;background:none;border:none;cursor:pointer;}
+.drawer-sec{padding:10px 12px;}
+.drawer-sec h3{font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;padding:0 4px;}
+.drawer-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:600;color:#333;margin-bottom:2px;transition:background .2s;border:none;background:none;width:100%;font-family:'Hind Siliguri',sans-serif;cursor:pointer;text-align:left;}
+.drawer-link:hover{background:var(--green-light);color:var(--green);}
+.drawer-link i{width:16px;color:var(--green);font-size:13px;}
+#drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;display:none;}
+#drawer-overlay.open{display:block;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--green-dark),var(--blue-dark));padding:28px 16px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800') center/cover;opacity:.12;}
+.hero-content{position:relative;z-index:1;}
+.hero h2{color:white;font-size:22px;font-weight:800;margin-bottom:6px;}
+.hero h2 span{color:var(--yellow);}
+.hero p{color:rgba(255,255,255,.85);font-size:13px;margin-bottom:16px;}
+.hero-btn{display:inline-block;background:var(--yellow);color:var(--blue-dark);font-weight:800;font-size:15px;padding:11px 28px;border-radius:30px;cursor:pointer;}
+
+/* MODAL */
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:10000;display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:all .3s;}
+.modal.show{visibility:visible;opacity:1;}
+.modal-content{background:white;width:95%;max-width:550px;max-height:90vh;overflow-y:auto;border-radius:24px;padding:20px;position:relative;}
+.modal-close{position:absolute;top:12px;right:16px;font-size:24px;cursor:pointer;color:#aaa;}
+.modal-close:hover{color:var(--red);}
+.modal h3{font-size:20px;font-weight:800;color:var(--blue);margin-bottom:16px;}
+.delivery-box{background:#e8f5ee;padding:12px;border-radius:16px;margin-bottom:16px;}
+.addr-row{margin-bottom:8px;display:flex;flex-wrap:wrap;align-items:center;}
+.addr-row label{width:100px;font-size:12px;font-weight:600;color:#555;}
+.addr-row .readonly{color:#888;}
+.addr-row input{flex:1;padding:6px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;min-width:150px;}
+textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:12px;margin:8px 0;resize:vertical;}
+.upload-area{border:2px dashed var(--green);border-radius:16px;padding:16px;text-align:center;margin:12px 0;cursor:pointer;transition:background .2s;}
+.upload-area:hover{background:var(--green-light);}
+.upload-area i{font-size:28px;color:var(--green);}
+#imagePreview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+#imagePreview img{width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #ddd;}
+.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--green),var(--blue));color:white;border:none;border-radius:30px;font-size:16px;font-weight:800;cursor:pointer;margin-top:16px;}
+
+/* SECTION TITLE */
+.sec-wrap{padding:16px 14px 0;}
+.sec-title{display:flex;align-items:center;justify-content:space-between;position:relative;}
+.sec-title h3{font-size:24px;font-weight:800;color:var(--blue);display:inline-block;position:relative;margin-left:4px;}
+.sec-title h3 span{position:absolute;left:0;bottom:-1px;width:100%;height:3px;background:var(--green);display:block;}
+.sec-divider{width:100%;border-top:1.5px solid #b8e0c4;margin:0 0 10px;}
+.see-all{font-size:12px;font-weight:700;color:var(--green);background:var(--green-light);padding:5px 12px;border-radius:20px;}
+.sec-title-center{text-align:center;}
+.sec-title-center h3{margin:0 auto;}
+
+/* CATEGORY SWIPER */
+.mySwiper{padding:0 14px 14px !important;}
+.swiper-slide{text-align:center;display:flex;flex-direction:column;align-items:center;}
+.swiper-slide img{width:72px;height:72px;object-fit:cover;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:transform .4s ease,box-shadow .4s;}
+@media(min-width:768px){.swiper-slide img{width:140px;height:140px;}}
+.swiper-slide img:hover{transform:scale(1.12);box-shadow:0 8px 24px rgba(26,122,60,.5);}
+.swiper-slide h3{margin-top:7px;font-size:12px;font-weight:700;color:#333;}
+@media(min-width:768px){.swiper-slide h3{font-size:14px;}}
+
+/* FEATURED BANNER */
+.featured-banner{margin:4px 12px;background:linear-gradient(135deg,#1D5C87,#1a7a3c);border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;overflow:hidden;position:relative;}
+.featured-banner::after{content:'🛒';position:absolute;right:-10px;top:-10px;font-size:70px;opacity:.12;}
+.featured-banner h3{color:white;font-size:15px;font-weight:800;margin-bottom:3px;}
+.featured-banner p{color:rgba(255,255,255,.9);font-size:12px;}
+.offer-btn{background:white;color:#ff6b35;padding:8px 14px;border-radius:20px;font-weight:800;font-size:13px;white-space:nowrap;flex-shrink:0;}
+
+/* PRODUCTS */
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;}
+@media(min-width:768px){.products-grid{grid-template-columns:repeat(5,1fr);}}
+@media(min-width:1200px){.products-grid{grid-template-columns:repeat(5,1fr);}}
+
+.product-card{position:relative;background:white;border:1px solid #e5e5e5;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.product-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.product-img{position:relative;overflow:hidden;}
+.product-img img{width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform 1s ease;display:block;}
+@media(min-width:768px){.product-img img{aspect-ratio:3/4;}}
+.product-card:hover .product-img img{transform:scale(1.12);}
+.badge-disc{position:absolute;top:8px;left:8px;background:var(--red);color:white;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;z-index:2;}
+.wishlist{position:absolute;top:8px;right:8px;background:white;border:1px solid #ddd;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#ccc;z-index:2;font-size:14px;transition:color .2s;padding:0;}
+.wishlist.active,.wishlist:hover{color:var(--red);}
+.product-actions{position:absolute;left:0;right:0;bottom:-44px;display:grid;grid-template-columns:1fr 1fr;transition:bottom .35s ease;z-index:3;}
+.product-card:hover .product-actions{bottom:0;}
+.btn-detail{background:rgba(29,92,135,.88);color:white;font-size:12px;font-weight:700;padding:10px 4px;text-align:center;border:none;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:background .2s;}
+.btn-detail:hover{background:var(--blue);}
+.btn-cart-p{background:rgba(0,0,0,.62);color:white;font-size:12px;font-weight:700;padding:10px 4px;text-align:center;border:none;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:background .2s;}
+.btn-cart-p:hover,.btn-cart-p.added{background:var(--green);}
+.product-body{padding:7px 8px 8px;}
+.product-name{font-size:12px;font-weight:700;color:#222;margin-bottom:2px;line-height:1.3;}
+.product-unit{font-size:10px;color:#888;margin-bottom:4px;}
+.product-price{font-size:13px;font-weight:800;color:var(--green);}
+.old-price{font-size:11px;font-weight:400;color:#aaa;text-decoration:line-through;margin-left:4px;}
+
+/* BRAND MARQUEE */
+.brand-marquee-wrap{padding:0 0 16px;overflow:hidden;}
+.brand-track{display:flex;gap:14px;width:max-content;animation:marqueeRTL 22s linear infinite;}
+.brand-marquee-wrap:hover .brand-track{animation-play-state:paused;}
+@keyframes marqueeRTL{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.brand-logo{width:110px;height:60px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:white;transition:border .2s,transform .2s;flex-shrink:0;}
+.brand-logo img{width:100%;height:100%;object-fit:cover;}
+.brand-logo:hover{border-color:var(--green);transform:scale(1.05);}
+
+/* CART WIDGET */
+#cart-widget{position:fixed;top:50%;right:0;transform:translateY(-50%) translateZ(0);z-index:9990;cursor:pointer;}
+.cart-box{background:linear-gradient(135deg,#1a7a3c,#1D5C87);border-radius:14px 0 0 14px;padding:12px 10px 10px;text-align:center;box-shadow:-4px 0 18px rgba(0,0,0,.25);min-width:58px;}
+.cart-bag-icon{width:32px;height:32px;margin:0 auto 3px;display:block;}
+.cart-box .cart-count{color:white;font-size:11px;font-weight:800;display:block;}
+.cart-box .cart-price{color:rgba(255,255,255,.85);font-size:10px;font-weight:700;display:block;}
+
+/* CHAT WIDGET */
+#chat-widget{position:fixed;bottom:24px;right:16px;z-index:9990;display:flex;align-items:center;gap:8px;transform:translateZ(0);}
+.chat-opts{display:flex;gap:8px;}
+.chat-opts.hidden{display:none;}
+.chat-btn-w{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;box-shadow:var(--shadow);transition:transform .2s;}
+.chat-btn-w:hover{transform:scale(1.1);}
+.chat-toggle{width:48px;height:48px;border-radius:50%;background:var(--blue);color:white;border:none;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 15px rgba(29,92,135,.4);}
+
+/* ANIMATIONS */
+.reveal-section{opacity:0;transform:translateY(50px);transition:opacity 1.2s ease-out,transform 1.2s cubic-bezier(.16,1,.3,1);}
+.reveal-section.visible{opacity:1;transform:translateY(0);}
+
+/* REVIEWS SECTION */
+.reviews-section{background:white;padding:20px 14px;margin-top:8px;}
+.review-card{background:#f9fafb;border-radius:16px;padding:14px;border-left:4px solid var(--green);}
+.review-stars{color:#f59e0b;font-size:15px;letter-spacing:2px;margin-bottom:4px;}
+.review-name{font-weight:700;color:var(--blue);font-size:14px;}
+.review-place{font-size:11px;color:#888;margin-bottom:4px;}
+.review-text{color:#444;font-size:13px;line-height:1.5;}
+
+/* FOOTER */
+footer{background:linear-gradient(135deg,var(--blue-dark),var(--green-dark));color:white;margin-top:8px;}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:20px 16px 0;}
+@media(min-width:768px){.footer-grid{grid-template-columns:repeat(3,1fr);}}
+.footer-col h4{font-size:13px;font-weight:800;color:var(--yellow);margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:6px;}
+.footer-col a,.footer-col p{display:block;font-size:12px;color:rgba(255,255,255,.75);margin-bottom:6px;}
+.footer-col a:hover{color:white;}
+.footer-newsletter{background:rgba(0,0,0,.2);padding:16px;margin-top:16px;text-align:center;}
+.footer-newsletter h4{font-size:14px;font-weight:800;margin-bottom:6px;}
+.footer-newsletter p{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:10px;}
+.newsletter-row{display:flex;justify-content:center;gap:0;max-width:320px;margin:0 auto;}
+.newsletter-row input{flex:1;padding:10px 12px;border:none;border-radius:10px 0 0 10px;font-size:13px;font-family:'Hind Siliguri',sans-serif;outline:none;}
+.newsletter-row button{background:var(--yellow);color:var(--blue-dark);border:none;padding:10px 14px;border-radius:0 10px 10px 0;font-weight:800;font-size:13px;cursor:pointer;font-family:'Hind Siliguri',sans-serif;}
+.social-row{display:flex;justify-content:center;gap:12px;margin-top:12px;}
+.social-icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:14px;color:white;transition:background .2s;}
+.social-icon:hover{background:rgba(255,255,255,.3);}
+.footer-bottom{text-align:center;padding:14px 16px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.55);margin-top:8px;}
+
+/* ===== পণ্য সংখ্যা কন্ট্রোল ===== */
+#products-grid .product-card:nth-child(n+9){display:none;}
+#featured-grid .product-card:nth-child(n+7){display:none;}
+@media(min-width:768px){
+  #products-grid .product-card:nth-child(n+9){display:block!important;}
+  #products-grid .product-card:nth-child(n+16){display:none!important;}
+  #featured-grid .product-card:nth-child(n+7){display:block!important;}
+  #featured-grid .product-card:nth-child(n+11){display:none!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- POPUP -->
+<div id="popup-overlay">
+  <div id="popup">
+    <div class="popup-hdr">
+      <h1>Astha <span>আস্থা</span></h1>
+      <p>📍 বিশ্বাসের ঠিকানা</p>
+    </div>
+    <div class="popup-body">
+      <div class="field"><label>📍 জেলা / District *</label><select id="p-district" onchange="onDistrictChange()"><option value="">— জেলা বেছে নিন —</option></select></div>
+      <div class="field"><label>🏘️ উপজেলা / Upazila *</label><select id="p-upazila" disabled onchange="onUpazilaChange()"><option value="">— আগে জেলা বেছে নিন —</option></select></div>
+      <div class="field"><label>🏡 ইউনিয়ন / Union *</label><select id="p-union" disabled onchange="onUnionChange()"><option value="">— আগে উপজেলা বেছে নিন —</option></select></div>
+      <div id="union-notice" style="display:none;background:#fef3c7;border:2px solid #f59e0b;border-radius:10px;padding:10px;font-size:13px;font-weight:600;color:#92400e;margin-bottom:10px;"></div>
+      <button class="popup-btn" id="popup-btn" disabled onclick="confirmPopup()">✅ বাজারে প্রবেশ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div id="drawer">
+  <div class="drawer-hdr"><h2 style="display:flex;align-items:center;gap:8px;"><span style="background:var(--yellow);color:#333;width:28px;height:28px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:16px;">🤝</span>Astha <span>আস্থা</span></h2><button class="drawer-close" onclick="closeDrawer()"><i class="fas fa-times"></i></button></div>
+  <div class="drawer-sec"><h3>মেনু</h3><button class="drawer-link" onclick="scrollTo(0,0);closeDrawer()"><i class="fas fa-home"></i> হোম</button><a href="all-products.html" class="drawer-link"><i class="fas fa-store"></i> সব পণ্য</a><a href="orders.html" class="drawer-link"><i class="fas fa-box"></i> আমার অর্ডার</a><a href="login.html" class="drawer-link"><i class="fas fa-user"></i> লগইন / রেজিস্টার</a><button class="drawer-link" onclick="changeUnion();closeDrawer()"><i class="fas fa-map-marker-alt"></i> ইউনিয়ন পরিবর্তন</button></div>
+  <hr style="border-color:#f0f0f0;margin:4px 12px;"/>
+  <div class="drawer-sec"><h3>ক্যাটাগরি</h3><button class="drawer-link"><i class="fas fa-carrot"></i> সবজি</button><button class="drawer-link"><i class="fas fa-fish"></i> মাছ</button><button class="drawer-link"><i class="fas fa-drumstick-bite"></i> মাংস</button><button class="drawer-link"><i class="fas fa-seedling"></i> চাল-ডাল</button><button class="drawer-link"><i class="fas fa-pepper-hot"></i> মশলা</button><button class="drawer-link"><i class="fas fa-apple-alt"></i> ফল</button><button class="drawer-link"><i class="fas fa-egg"></i> দুধ-ডিম</button><button class="drawer-link"><i class="fas fa-tint"></i> তেল</button></div>
+  <hr style="border-color:#f0f0f0;margin:4px 12px;"/>
+  <div class="drawer-sec"><a href="#" class="drawer-link"><i class="fas fa-headset"></i> যোগাযোগ</a></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top"><button class="menu-btn" onclick="openDrawer()"><i class="fas fa-bars"></i></button><div class="logo"><div class="logo-icon">🤝</div><div class="logo-text">Astha <span>আস্থা</span></div></div><div style="display:flex;align-items:center;gap:8px;"><div class="union-badge" id="union-badge" onclick="changeUnion()">📍 ইউনিয়ন</div><a href="login.html" class="login-btn" style="background:rgba(255,255,255,.15);padding:7px 10px;border-radius:10px;"><i class="fas fa-user"></i></a></div></div>
+  <div class="search-bar"><input type="text" id="searchInput" placeholder="🔍 পণ্য খুঁজুন..." oninput="searchProducts()"/><button onclick="searchProducts()"><i class="fas fa-search"></i></button></div>
+</header>
+
+<!-- TIME BANNER -->
+<div class="time-banner"><div class="time-slide"><i class="fas fa-clock"></i> 🛒 অর্ডার সময়: সকাল <span>৬:০০ টা</span> থেকে দুপুর <span>১:০০ টা</span> &nbsp;|&nbsp; 🚚 ডেলিভারি সময়: দুপুর <span>২:০০ টা</span> থেকে বিকেল <span>৪:০০ টা</span> &nbsp;|&nbsp; ⚠️ দুপুর ১টার পর অর্ডার নিলে <span>পরের দিন</span> ডেলিভারি</div></div>
+
+<!-- HERO -->
+<div class="hero reveal-section"><div class="hero-content"><h2>স্বাগতম <span>Astha আস্থায়</span> 🛒</h2><p id="hero-sub">বিশ্বাসের ঠিকানা — তাজা বাজার আপনার দরজায়</p><button class="hero-btn" onclick="openMarketModal()">📝 বাজারের তালিকা লিখে বা ছবি তুলে দিন</button></div></div>
+
+<!-- MODAL -->
+<div id="marketModal" class="modal"><div class="modal-content"><button class="modal-close" onclick="closeMarketModal()">&times;</button><h3>📝 বাজারের তালিকা দিন</h3><div class="delivery-box"><div class="addr-row"><label>জেলা :</label><span class="readonly" id="modal-district">—</span></div><div class="addr-row"><label>উপজেলা :</label><span class="readonly" id="modal-upazila">—</span></div><div class="addr-row"><label>ইউনিয়ন :</label><span class="readonly" id="modal-union">—</span></div><div class="addr-row"><label>👤 নাম :</label><input type="text" id="modal-name" placeholder="আপনার নাম"></div><div class="addr-row"><label>👨 পিতা/স্বামী :</label><input type="text" id="modal-father" placeholder="পিতা/স্বামীর নাম"></div><div class="addr-row"><label>🏡 গ্রাম :</label><input type="text" id="modal-village" placeholder="গ্রাম"></div><div class="addr-row"><label>🏠 পাড়া :</label><input type="text" id="modal-para" placeholder="পাড়া/মহল্লা"></div><div class="addr-row"><label>📞 মোবাইল :</label><input type="tel" id="modal-mobile" placeholder="01XXXXXXXXX" maxlength="11"></div></div><textarea id="marketList" rows="3" placeholder="যেমন: ২ কেজি আলু, ১ কেজি পেঁয়াজ, ১ কেজি মাছ..."></textarea><div class="upload-area" onclick="document.getElementById('fileInput').click()"><i class="fas fa-camera"></i> <i class="fas fa-image"></i><p>📸 ছবি তুলুন বা গ্যালারি থেকে আপলোড করুন</p><input type="file" id="fileInput" accept="image/*" capture="environment" style="display:none" multiple></div><div id="imagePreview"></div><label>📞 পণ্যের নাম ও দাম জানানোর জন্য হোয়াটসঅ্যাপ নম্বর :</label><input type="tel" id="whatsappNumber" class="whatsapp-input" placeholder="01XXXXXXXXX" maxlength="11" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:12px;margin:8px 0;"><button class="submit-btn" onclick="submitOrder()">📤 বাজারের তালিকা জমা দিন</button></div></div>
+
+<!-- CATEGORY -->
+<div class="reveal-section"><div class="sec-wrap"><div class="sec-title sec-title-center" style="justify-content:center;"><h3>ক্যাটাগরি<span></span></h3></div></div><div class="sec-divider" style="margin:0 0 8px;"></div><div class="swiper mySwiper"><div class="swiper-wrapper"><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=200" alt="সবজি"/><h3>সবজি</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=200" alt="মাছ"/><h3>মাছ</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=200" alt="মাংস"/><h3>মাংস</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200" alt="চাল"/><h3>চাল-ডাল</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=200" alt="মশলা"/><h3>মশলা</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=200" alt="ফল"/><h3>ফল</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200" alt="দুধ"/><h3>দুধ-ডিম</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200" alt="তেল"/><h3>তেল</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=200" alt="মধু"/><h3>মধু-ঘি</h3></div><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=200" alt="ডাল"/><h3>ডাল</h3></div></div></div></div>
+
+<!-- FEATURED BANNER -->
+<div class="featured-banner reveal-section"><div><h3>🔥 বিশেষ অফার!</h3><p>আজই অর্ডার করুন, বিশেষ ছাড় পান</p></div><a href="checkout.html" class="offer-btn">অর্ডার করুন</a></div>
+
+<!-- ALL PRODUCTS -->
+<div class="reveal-section" id="products"><div class="sec-wrap"><div class="sec-title"><h3>সব পণ্য<span></span></h3><a href="all-products.html" class="see-all">সব দেখুন →</a></div></div><div class="sec-divider"></div><div class="products-grid" id="products-grid"></div></div>
+
+<!-- FEATURED PRODUCTS -->
+<div class="reveal-section" style="background:white;margin-top:8px;"><div class="sec-wrap"><div class="sec-title"><h3>বাছাই করা পণ্য<span></span></h3><a href="all-products.html" class="see-all">সব দেখুন →</a></div></div><div class="sec-divider"></div><div class="products-grid featured-grid" id="featured-grid"></div></div>
+
+<!-- REVIEWS -->
+<div class="reviews-section reveal-section">
+  <div class="sec-wrap"><div class="sec-title"><h3>⭐ গ্রাহক রিভিউ</h3></div></div>
+  <div class="sec-divider"></div>
+  <div id="reviews-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 4px;"></div>
+</div>
+
+<!-- BRANDS -->
+<div class="reveal-section" id="brands-section" style="background:white;margin-top:8px;padding-bottom:8px;"><div class="sec-wrap"><div class="sec-title"><h3>আমাদের ব্র্যান্ড<span></span></h3></div></div><div class="sec-divider"></div><div class="brand-marquee-wrap"><div class="brand-track" id="brands-track"></div></div></div>
+
+<!-- FOOTER -->
+<footer><div class="footer-grid"><div class="footer-col"><h4>Astha আস্থা</h4><p>বিশ্বাসের ঠিকানা — হোম ডেলিভারি সেবা</p><p>📞 01XXXXXXXX</p></div><div class="footer-col"><h4>প্রয়োজনীয় লিংক</h4><a href="index.html">হোম</a><a href="all-products.html">সব পণ্য</a><a href="orders.html">আমার অর্ডার</a><a href="login.html">লগইন</a></div><div class="footer-col"><h4>আমাদের সেবা</h4><p>✅ ক্যাশ অন ডেলিভারি</p><p>✅ বিকাশ / নগদ / রকেট</p><p>✅ সকাল ৬-১টা অর্ডার</p><p>✅ দুপুর ২-৪টা ডেলিভারি</p></div></div><div class="footer-newsletter"><h4>📢 আপডেট পেতে সাবস্ক্রাইব করুন</h4><p>নতুন অফার ও পণ্যের খবর সবার আগে পান</p><div class="newsletter-row"><input type="tel" placeholder="আপনার মোবাইল নম্বর"/><button>সাবস্ক্রাইব</button></div><div class="social-row"><a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a><a href="tel:01XXXXXXXX" class="social-icon"><i class="fas fa-phone"></i></a><a href="#" class="social-icon"><i class="fab fa-youtube"></i></a></div></div><div class="footer-bottom"><p>© ২০২৫ Astha আস্থা | বিশ্বাসের ঠিকানা | Developed with ❤️</p></div></footer>
+
+<!-- CART WIDGET -->
+<div id="cart-widget" onclick="window.location.href='checkout.html'"><div class="cart-box"><svg class="cart-bag-icon" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 40 L8 100 L75 100 L85 40 Z" fill="white" opacity="0.95"/><path d="M8 100 L2 108 L80 108 L75 100 Z" fill="rgba(255,255,255,0.5)"/><path d="M85 40 L92 45 L82 108 L80 108 L75 100 L85 40 Z" fill="rgba(255,255,255,0.4)"/><path d="M30 40 Q30 18 46 18 Q62 18 62 40" stroke="white" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="30" cy="40" r="5" fill="white"/><circle cx="62" cy="40" r="5" fill="white"/><path d="M8 100 Q11 94 15 100" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none"/></svg><span class="cart-count" id="cart-count">০ টি</span><span class="cart-price" id="cart-price">৳ ০</span></div></div>
+
+<!-- CHAT WIDGET -->
+<div id="chat-widget"><div class="chat-opts hidden" id="chat-opts"><a href="https://wa.me/8801XXXXXXXXX" class="chat-btn-w" style="background:#25D366;"><i class="fab fa-whatsapp"></i></a><a href="https://m.me/" class="chat-btn-w" style="background:#1877f2;"><i class="fab fa-facebook-messenger"></i></a><a href="tel:01XXXXXXXX" class="chat-btn-w" style="background:#1a7a3c;"><i class="fas fa-phone"></i></a></div><button class="chat-toggle" id="chat-toggle"><i class="fas fa-headset"></i></button></div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+// ===== লোকেশন ডাটা =====
+const DB_LOCATIONS = {
+  'জামালপুর': {
+    'জামালপুর সদর': {
+      'কেন্দুয়া': [],'শরিফপুর': [],'তিতপল্লা': [],'লক্ষীরচর': [],'বাঁশচড়া': [],'তুলশীরচর': [],'মেষ্টা': [],'শাহবাজপুর': [],'দিগপাইত': [],'ইটাইল': [],'নরন্দী': [],'ঘোড়াধাপ': [],'রানাগাছা': [],'শ্রীপুর': [],'রিশদপুর': [],
+    },
+    'ইসলামপুর': {
+      'কুলকান্দি': [],'বেলগাছা': [],'চিনাডুলী': [],'সাপধরী': [],'নোয়ারপাড়া': [],'পাথর্শী': [],'গোয়ালেরচর': [],'চরগোয়ালিনী': [],'চরপুটিমারী': [],'গাইবান্ধা': [],'ইসলামপুর': [],'পলবান্ধা': [],
+    },
+    'মেলান্দহ': {
+      'দুরমুট': [],'চরবানী পাকুরিয়া': [],'ফুলকোচা': [],'ঘোষেরপাড়া': [],'শ্যামপুর': [],'আদ্রা': [],'ঝাউগড়া': [],'কুলিয়া': [],'মাহমুদপুর': [],'নাংলা': [],'নয়ানগর': [],
+    },
+    'দেওয়ানগঞ্জ': {
+      'হাতীভাঙা': [],'দেওয়ানগঞ্জ': [],'চরআমখাওয়া': [],'ডাংধরা': [],'বাহাদুরাবাদ': [],'চিকাজানী': [],'চুকাইবাড়ী': [],'পাররাম রামপুর': [],
+    },
+    'বকশীগঞ্জ': {
+      'ধানুয়া': [],'সাধুরপাড়া': [],'বকশীগঞ্জ': [],'নিলক্ষিয়া': [],'বগারচর': [],'বাট্টাজোড়': [],'মেরুরচর': [],
+    },
+    'মাদারগঞ্জ': {
+      'আদারভিটা': [],'বালিজুড়ী': [],'চরপাকেরদহ': [],'গুনারীতলা': [],'জোড়খালী': [],'কড়ইচড়া': [],'সিধুলী': [],
+    },
+    'সরিষাবাড়ী': {
+      'আওনা': [],'ভাটারা': [],'ডোয়াইল': [],'কামরাবাদ': [],'মহাদান': [],'পিংনা': [],'পোগলদিঘা': [],'সাতপোয়া': [],
+    },
+  },
+  'টাঙ্গাইল': {
+    'টাঙ্গাইল সদর': {
+      'মগড়া': [],'বাঘিল': [],'দাইন্যা': [],'গালা': [],'ঘারিন্দা': [],'হুগড়া': [],'করিটিয়া': [],'কাতুলী': [],'কাকুয়া': [],'মাহমুদনগর': [],'ছিলিমপুর': [],'পোড়াবাড়ী': [],
+    },
+    'বাসাইল': {
+      'ফুলকি': [],'হাবলা': [],'কাঞ্চনপুর': [],'কাশিল': [],'কাউলজানী': [],'বাসাইল': [],
+    },
+    'ভূঞাপুর': {
+      'অর্জুনা': [],'আলোয়া': [],'ফলদা': [],'গাবসারা': [],'গোবিন্দাসী': [],'নিকরাইল': [],
+    },
+    'দেলদুয়ার': {
+      'দেউলী': [],'আটিয়া': [],'দেলদুয়ার': [],'ডুবাইল': [],'এলাসিন': [],'ফাজিলহাটি': [],'লাউহাটি': [],'পাথরাইল': [],
+    },
+    'ঘাটাইল': {
+      'দিঘলকান্দি': [],'সংগ্রামপুর': [],'সাগরদিঘি': [],'লক্ষিন্দর': [],'লোকেরপাড়া': [],'আনেহলা': [],'দেউলাবাড়ী': [],'দেওপাড়া': [],'ধলাপাড়া': [],'দিগড়': [],'ঘাটাইল': [],'জামুরিয়া': [],'রসুলপুর': [],'সন্ধানপুর': [],
+    },
+    'গোপালপুর': {
+      'ধোপাকান্দি': [],'হাদিরা': [],'হেমনগর': [],'ঝাওয়াইল': [],'মির্জাপুর': [],'নগদাশিমলা': [],'আলমনগর': [],
+    },
+    'কালিহাতী': {
+      'দশিকিয়া': [],'বল্লা': [],'বাংড়া': [],'বীরবাসিন্দা': [],'দুর্গাপুর': [],'গোহালিয়াবাড়ী': [],'কোকডহরা': [],'নাগবাড়ী': [],'নারান্দিয়া': [],'পাইকড়া': [],'পারখী': [],'সল্লা': [],'সহদেবপুর': [],
+    },
+    'মধুপুর': {
+      'ফুলবাগচালা': [],'মির্জাবাড়ী': [],'বেরীবাইদ': [],'কুড়ালিয়া': [],'শোলাকুড়ি': [],'মিহষমারা': [],'কুড়াগাছা': [],'আলোকদিয়া': [],'অরণখোলা': [],'আউশনারা': [],'গোলাবাড়ী': [],
+    },
+    'মির্জাপুর': {
+      'ভাওড়া': [],'ওয়ার্শী': [],'আজগানা': [],'আনাইতারা': [],'বহুরিয়া': [],'বানাইল': [],'বাঁশতৈল': [],'ভাতগ্রাম': [],'ফেতপুর': [],'গোড়াই': [],'জামুকী': [],'লতিফপুর': [],'মেহড়া': [],'তরফপুর': [],
+    },
+    'নাগরপুর': {
+      'ধুবড়িয়া': [],'দিপ্তীর': [],'ভারড়া': [],'গয়হাটা': [],'বেকড়া আটগ্রাম': [],'ভাদ্রা': [],'মামুদনগর': [],'মোকনা': [],'নাগরপুর': [],'পাকুটিয়া': [],'সহবতপুর': [],'সিলিমাবাদ': [],
+    },
+    'সখীপুর': {
+      'গজারিয়া': [],'বড় চওনা': [],'বেহড়াতৈল': [],'হেতয়া রাজাবাড়ী': [],'বহুরিয়া': [],'দাড়িয়াপুর': [],'হাতীবান্ধা': [],'যাদবপুর': [],'কাকড়াজান': [],'কালিয়া': [],
+    },
+    'ধনবাড়ী': {
+      'মুশুদ্দি': [],'বিলভদ্র': [],'বানিয়াজান': [],'বীরতারা': [],'যদুনাথপুর': [],'ধোপাখালী': [],'পাইষ্কা': [],
+    },
+  },
+  'শেরপুর': {
+    'শেরপুর সদর': {
+      'পাকুরিয়া': [],'লছমনপুর': [],'চরপক্ষীমারি': [],'বাজিতখিলা': [],'বলাইরচর': [],'বেতমারি ঘুঘুরাকান্দি': [],'ভাতশালা': [],'চরমোচারিয়া': [],'চরশেরপুর': [],'ধলা': [],'গাজির খামার': [],'কামারের চর': [],'কামারিয়া': [],'রৌহা': [],
+    },
+    'নকলা': {
+      'গণপদ্দী': [],'বানেশ্বর্দী': [],'চন্দ্রকোনা': [],'চরঅষ্টধর': [],'গৌড়দ্বার': [],'নকলা': [],'পাঠাকাটা': [],'টালকী': [],'উরফা': [],
+    },
+    'নালিতাবাড়ী': {
+      'কাকরকান্দি': [],'মিরচপুরাণ': [],'যোগনীয়া': [],'পোড়াগাও': [],'রাজনগর': [],'বাঘবেড়': [],'কলসপাড়': [],'নালিতাবাড়ী': [],'নয়াবীল': [],'নন্নী': [],'রামচন্দ্রকুড়া': [],'রুপনারায়নকুড়া': [],
+    },
+    'শ্রীবর্দী': {
+      'তাতীহাটি': [],'কুড়িকাহনিয়া': [],'শ্রীবর্দী': [],'ভেলুয়া': [],'গড়জরিপা': [],'গোশাইপুর': [],'কাকিলাকুড়া': [],'খিড়িয়া কাজিরচর': [],'রানীশিমুল': [],'সিংগাবর্না': [],
+    },
+    'ঝিনাইগাতী': {
+      'ধানশাইল': [],'গৌরিপুর': [],'হাতিবান্ধা': [],'ঝিনাইগাতী': [],'কাংশা': [],'মালিঝিকান্দা': [],'নলকুড়া': [],
+    },
+  },
+};
+
+// Default Products
+const DB_DEFAULT_PRODUCTS = [
+  {id:1,name:'মিনিকেট চাল',cat:'চাল-ডাল',price:65,unit:'কেজি',img:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400',badge:'-১৩%'},
+  {id:2,name:'রুই মাছ',cat:'মাছ',price:280,unit:'কেজি',img:'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=400',badge:'-১২%'},
+  {id:3,name:'আলু',cat:'সবজি',price:35,unit:'কেজি',img:'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400',badge:'-২২%'},
+  {id:4,name:'পেঁয়াজ',cat:'সবজি',price:55,unit:'কেজি',img:'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400',badge:''},
+  {id:5,name:'গরুর মাংস',cat:'মাংস',price:720,unit:'কেজি',img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400',badge:'-১০%'},
+  {id:6,name:'মসুর ডাল',cat:'চাল-ডাল',price:110,unit:'কেজি',img:'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400',badge:'-১৫%'},
+  {id:7,name:'সরিষার তেল',cat:'তেল',price:180,unit:'লিটার',img:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400',badge:'-১০%'},
+  {id:8,name:'টমেটো',cat:'সবজি',price:40,unit:'কেজি',img:'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=400',badge:'-২০%'},
+  {id:9,name:'ইলিশ মাছ',cat:'মাছ',price:850,unit:'কেজি',img:'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=400',badge:'-১৫%'},
+  {id:10,name:'খাঁটি মধু',cat:'অন্যান্য',price:350,unit:'২৫০গ্রাম',img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400',badge:'-১৬%'},
+  {id:11,name:'দেশি মুরগি',cat:'মাংস',price:380,unit:'কেজি',img:'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400',badge:'-১৫%'},
+  {id:12,name:'গাওয়া ঘি',cat:'দুধ-ডিম',price:420,unit:'২৫০গ্রাম',img:'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400',badge:'-১৬%'},
+  {id:13,name:'কাঁচা মরিচ',cat:'সবজি',price:60,unit:'কেজি',img:'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400',badge:'-২৫%'},
+  {id:14,name:'ডিম',cat:'দুধ-ডিম',price:120,unit:'ডজন',img:'https://images.unsplash.com/photo-1548365328-8c6db3220e4d?w=400',badge:'-১০%'},
+  {id:15,name:'নারকেল তেল',cat:'তেল',price:220,unit:'৫০০মিলি',img:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400',badge:'-১৫%'},
+];
+
+function toBn(n){return String(Math.round(n)).replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[d]);}
+function DB_getProducts(){try{const s=localStorage.getItem('astha_products');return s?JSON.parse(s):[...DB_DEFAULT_PRODUCTS];}catch(e){return[...DB_DEFAULT_PRODUCTS];}}
+function DB_getUnionPrices(){try{return JSON.parse(localStorage.getItem('astha_union_prices')||'{}');}catch(e){return{};}}
+function DB_getPrice(pid,union){const p=DB_getUnionPrices();return p[union+'_'+pid]||p[union]?.[pid]||null;}
+function DB_getCart(){try{return JSON.parse(sessionStorage.getItem('db_cart')||'[]');}catch(e){return[];}}
+function DB_saveCart(cart){sessionStorage.setItem('db_cart',JSON.stringify(cart));localStorage.setItem('astha_cart',JSON.stringify(cart));}
+function DB_addToCart(product,qty=1){let cart=DB_getCart();const ex=cart.find(i=>i.id===product.id);if(ex)ex.qty+=qty;else cart.push({...product,qty});DB_saveCart(cart);DB_updateCartUI();}
+function DB_updateCartUI(){const cart=DB_getCart();const count=cart.reduce((s,i)=>s+i.qty,0);const total=cart.reduce((s,i)=>s+(i.displayPrice||i.price)*i.qty,0);const c=document.getElementById('cart-count');const p=document.getElementById('cart-price');if(c)c.textContent=toBn(count)+' টি';if(p)p.textContent='৳ '+toBn(total);}
+function DB_applyUnionPrices(products,union){if(!union)return products;return products.map(p=>{const c=DB_getPrice(p.id,union);return{...p,displayPrice:c||p.price};});}
+
+function DB_getActiveUnions(){ try { const saved = localStorage.getItem('active_unions'); if (saved) return JSON.parse(saved); return { 'দিগপাইত': true }; } catch(e) { return { 'দিগপাইত': true }; } }
+function DB_isUnionActive(union){ const active=DB_getActiveUnions(); return active[union]===true; }
+
+// POPUP
+function onDistrictChange(){
+  const d=document.getElementById('p-district').value;
+  const us=document.getElementById('p-upazila');
+  const un=document.getElementById('p-union');
+  us.innerHTML='<option value="">— উপজেলা বেছে নিন —</option>'; un.innerHTML='<option value="">— আগে উপজেলা বেছে নিন —</option>';
+  us.disabled=!d; un.disabled=true;
+  if(d && DB_LOCATIONS[d]){ Object.keys(DB_LOCATIONS[d]).forEach(u=>{ const o=document.createElement('option'); o.value=o.textContent=u; us.appendChild(o); }); }
+  checkPopup();
+}
+function onUpazilaChange(){
+  const d=document.getElementById('p-district').value;
+  const u=document.getElementById('p-upazila').value;
+  const un=document.getElementById('p-union');
+  un.innerHTML='<option value="">— ইউনিয়ন বেছে নিন —</option>';
+  un.disabled=!u;
+  if(d&&u&&DB_LOCATIONS[d]?.[u]){ Object.keys(DB_LOCATIONS[d][u]).forEach(x=>{ const o=document.createElement('option'); o.value=o.textContent=x; un.appendChild(o); }); }
+  checkPopup();
+}
+function onUnionChange(){
+  const un=document.getElementById('p-union').value;
+  const notice=document.getElementById('union-notice');
+  if(un && !DB_isUnionActive(un)){ if(notice){ notice.style.display='block'; notice.textContent='⚠️ দুঃখিত! '+un+' ইউনিয়নে এখনো আমাদের সেবা চালু হয়নি। শীঘ্রই আসছে!'; } document.getElementById('popup-btn').disabled=true; return; }
+  if(notice) notice.style.display='none';
+  checkPopup();
+}
+function checkPopup(){
+  const ok=document.getElementById('p-district').value && document.getElementById('p-upazila').value && document.getElementById('p-union').value;
+  document.getElementById('popup-btn').disabled=!ok;
+}
+let savedInfo=null;
+function confirmPopup(){
+  savedInfo={district:document.getElementById('p-district').value, upazila:document.getElementById('p-upazila').value, union:document.getElementById('p-union').value};
+  sessionStorage.setItem('deliveryInfo',JSON.stringify(savedInfo));
+  document.getElementById('popup-overlay').style.display='none';
+  document.getElementById('union-badge').textContent='📍 '+savedInfo.union;
+  document.getElementById('hero-sub').textContent=savedInfo.union+' ইউনিয়নে হোম ডেলিভারি';
+  applyAndRender(savedInfo.union);
+  startAnimations();
+}
+function changeUnion(){ document.getElementById('popup-overlay').style.display='flex'; sessionStorage.removeItem('deliveryInfo'); }
+
+function openDrawer(){ document.getElementById('drawer').classList.add('open'); document.getElementById('drawer-overlay').classList.add('open'); }
+function closeDrawer(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('drawer-overlay').classList.remove('open'); }
+
+document.getElementById('chat-toggle').addEventListener('click',()=>{ document.getElementById('chat-opts').classList.toggle('hidden'); });
+
+function makeCard(p){
+  const price=p.displayPrice||p.price;
+  const oldPrice=p.oldPrice||(p.price!==price?p.price:null);
+  return `<div class="product-card"><div class="product-img"><img src="${p.img||'https://picsum.photos/300?random='+p.id}" alt="${p.name}" loading="lazy"/>${p.badge?`<span class="badge-disc">${p.badge}</span>`:''}<button class="wishlist" onclick="this.classList.toggle('active')">❤</button></div><div class="product-actions"><button class="btn-detail" onclick="window.location.href='product.html?id=${p.id}'">🔍 বিস্তারিত</button><button class="btn-cart-p" onclick="addToCartBtn(${p.id},this)">🛒 কার্টে যোগ</button></div><div class="product-body"><div class="product-name">${p.name}</div><div class="product-unit">প্রতি ${p.unit}</div><div class="product-price">৳${price}${oldPrice?`<span class="old-price">৳${oldPrice}</span>`:''}</div></div></div>`;
+}
+let allProducts=[], featuredList=[];
+function applyAndRender(union){ const raw=DB_getProducts(); allProducts=DB_applyUnionPrices(raw, union); featuredList=DB_applyUnionPrices(raw.slice(0,12), union); renderGrids(); }
+function renderGrids(){ const pg=document.getElementById('products-grid'); const fg=document.getElementById('featured-grid'); if(pg) pg.innerHTML=allProducts.slice(0,15).map(makeCard).join(''); if(fg) fg.innerHTML=featuredList.slice(0,10).map(makeCard).join(''); }
+function addToCartBtn(id,btn){ const p=allProducts.find(x=>x.id===id)||featuredList.find(x=>x.id===id); if(!p) return; DB_addToCart(p); btn.textContent='✅ যোগ হয়েছে'; btn.classList.add('added'); setTimeout(()=>{btn.textContent='🛒 কার্টে যোগ';btn.classList.remove('added');},1200); }
+function searchProducts(){ const q=document.getElementById('searchInput').value.trim().toLowerCase(); if(!q){ document.getElementById('products-grid').innerHTML=allProducts.slice(0,15).map(makeCard).join(''); return; } const filtered=allProducts.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)); document.getElementById('products-grid').innerHTML=filtered.length?filtered.map(makeCard).join(''):'<div style="grid-column:1/-1;text-align:center;padding:30px;color:#aaa;">কোনো পণ্য পাওয়া যায়নি</div>'; }
+
+function openMarketModal(){
+  if(savedInfo){ document.getElementById('modal-district').textContent=savedInfo.district||'—'; document.getElementById('modal-upazila').textContent=savedInfo.upazila||'—'; document.getElementById('modal-union').textContent=savedInfo.union||'—'; } else { const saved=sessionStorage.getItem('deliveryInfo'); if(saved){ const info=JSON.parse(saved); document.getElementById('modal-district').textContent=info.district||'—'; document.getElementById('modal-upazila').textContent=info.upazila||'—'; document.getElementById('modal-union').textContent=info.union||'—'; } }
+  document.getElementById('marketModal').classList.add('show');
+}
+function closeMarketModal(){ document.getElementById('marketModal').classList.remove('show'); }
+document.getElementById('fileInput').addEventListener('change',function(e){ const preview=document.getElementById('imagePreview'); preview.innerHTML=''; for(let file of e.target.files){ const reader=new FileReader(); reader.onload=function(ev){ const img=document.createElement('img'); img.src=ev.target.result; preview.appendChild(img); }; reader.readAsDataURL(file); } });
+
+function submitOrder(){
+  const fileInput = document.getElementById('fileInput');
+  const orderData = {
+    id: Date.now(),
+    location: savedInfo || JSON.parse(sessionStorage.getItem('deliveryInfo') || '{}'),
+    name: document.getElementById('modal-name').value,
+    father: document.getElementById('modal-father').value,
+    village: document.getElementById('modal-village').value,
+    para: document.getElementById('modal-para').value,
+    mobile: document.getElementById('modal-mobile').value,
+    list: document.getElementById('marketList').value,
+    whatsapp: document.getElementById('whatsappNumber').value,
+    timestamp: new Date().toLocaleString()
+  };
+  if (fileInput && fileInput.files && fileInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      orderData.imageData = e.target.result;
+      saveOrder(orderData);
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    saveOrder(orderData);
+  }
+}
+
+function saveOrder(orderData) {
+  let orders = JSON.parse(localStorage.getItem('astha_orders') || '[]');
+  orders.unshift(orderData);
+  localStorage.setItem('astha_orders', JSON.stringify(orders));
+  alert('আপনার বাজারের তালিকা জমা হয়েছে। আমরা দাম যোগ করে হোয়াটসঅ্যাপে জানাবো।');
+  closeMarketModal();
+  document.getElementById('modal-name').value = '';
+  document.getElementById('modal-father').value = '';
+  document.getElementById('modal-village').value = '';
+  document.getElementById('modal-para').value = '';
+  document.getElementById('modal-mobile').value = '';
+  document.getElementById('marketList').value = '';
+  document.getElementById('whatsappNumber').value = '';
+  document.getElementById('imagePreview').innerHTML = '';
+}
+
+const observer=new IntersectionObserver(entries=>{ entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}); },{threshold:0});
+function startAnimations(){ document.querySelectorAll('.reveal-section').forEach((el,i)=>{ if(i<2) setTimeout(()=>el.classList.add('visible'),300+i*250); else observer.observe(el); }); }
+
+function DB_getReviews(){
+  const defaultReviews=[
+    {id:1,name:'রফিক মিয়া',place:'দিগপাইত',stars:5,text:'খুব দ্রুত ডেলিভারি পেয়েছি। পণ্যের মানও ভালো।'},
+    {id:2,name:'সুমি আক্তার',place:'ইসলামপুর',stars:5,text:'অনলাইনে বাজার করার এতো সহজ পদ্ধতি!'},
+    {id:3,name:'জামাল হোসেন',place:'গোয়ালেরচর',stars:4,text:'বেশিরভাগ সময় ভালো পণ্য পাই।'},
+    {id:4,name:'নাসরিন বেগম',place:'দিগপাইত',stars:5,text:'বাজারের তালিকা লিখে দিলাম, অসাধারণ!'}
+  ];
+  try{const s=localStorage.getItem('astha_reviews');return s?JSON.parse(s):defaultReviews;}catch(e){return defaultReviews;}
+}
+
+function renderReviews(){
+  const grid=document.getElementById('reviews-grid');
+  if(!grid) return;
+  const reviews=DB_getReviews();
+  if(!reviews.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#aaa;padding:20px;">এখনো কোনো রিভিউ নেই</div>';return;}
+  grid.innerHTML=reviews.map(r=>`<div class="review-card"><div class="review-stars">${'⭐'.repeat(r.stars||5)}</div><div class="review-name">${r.name}</div><div class="review-place">&#8212; ${r.place}</div><div class="review-text">"${r.text}"</div></div>`).join('');
+}
+
+function DB_getBrands(){
+  const defaultBrands=[
+    {id:1,name:'প্রাণ',logo:'https://picsum.photos/120/60?random=50'},
+    {id:2,name:'রাধুনি',logo:'https://picsum.photos/120/60?random=51'},
+    {id:3,name:'ইস্পাহানি',logo:'https://picsum.photos/120/60?random=52'},
+    {id:4,name:'আড়ং',logo:'https://picsum.photos/120/60?random=53'},
+    {id:5,name:'ফ্রেশ',logo:'https://picsum.photos/120/60?random=54'},
+    {id:6,name:'প্রেস্টিজ',logo:'https://picsum.photos/120/60?random=55'}
+  ];
+  try{const s=localStorage.getItem('astha_brands');return s?JSON.parse(s):defaultBrands;}catch(e){return defaultBrands;}
+}
+
+function renderBrands(){
+  const track=document.getElementById('brands-track');
+  const section=document.getElementById('brands-section');
+  if(!track) return;
+  const brands=DB_getBrands();
+  if(!brands.length){if(section)section.style.display='none';return;}
+  if(section)section.style.display='';
+  // Duplicate for seamless marquee scroll
+  const html=brands.map(b=>`<div class="brand-logo"><img src="${b.logo}" alt="${b.name}"/></div>`).join('');
+  track.innerHTML=html+html;
+}
+
+const swiper=new Swiper('.mySwiper',{ loop:true, autoplay:{delay:3500,disableOnInteraction:false}, breakpoints:{320:{slidesPerView:4,slidesPerGroup:4},768:{slidesPerView:5,slidesPerGroup:5}} });
+document.querySelector('.mySwiper')?.addEventListener('mouseenter',()=>swiper.autoplay.stop());
+document.querySelector('.mySwiper')?.addEventListener('mouseleave',()=>swiper.autoplay.start());
+document.querySelector('.mySwiper')?.addEventListener('touchstart',()=>swiper.autoplay.stop());
+document.querySelector('.mySwiper')?.addEventListener('touchend',()=>swiper.autoplay.start());
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const dSel=document.getElementById('p-district');
+  Object.keys(DB_LOCATIONS).forEach(d=>{ const o=document.createElement('option'); o.value=o.textContent=d; dSel.appendChild(o); });
+  DB_updateCartUI();
+  renderReviews();
+  renderBrands();
+  const saved=sessionStorage.getItem('deliveryInfo');
+  if(saved){ const info=JSON.parse(saved); document.getElementById('popup-overlay').style.display='none'; document.getElementById('union-badge').textContent='📍 '+info.union; document.getElementById('hero-sub').textContent=info.union+' ইউনিয়নে হোম ডেলিভারি'; applyAndRender(info.union); startAnimations(); }
+  else { applyAndRender(''); startAnimations(); }
+});
+</script>
+</body>
+</html>
