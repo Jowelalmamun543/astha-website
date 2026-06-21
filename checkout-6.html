@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>চেকআউট - Astha আস্থা</title>
+  <title>ржЪрзЗржХржЖржЙржЯ - Astha ржЖрж╕рзНржерж╛</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -22,66 +22,66 @@
 
 <header class="bg-[#1D5C87] text-white sticky top-0 z-50 shadow">
   <div class="flex items-center justify-between px-4 py-3 max-w-6xl mx-auto">
-    <a href="index.html" class="text-sm font-bold hover:underline"><i class="fas fa-arrow-left"></i> হোম</a>
-    <div class="text-center"><h1 class="text-xl font-bold">Astha <span class="text-yellow-300">আস্থা</span></h1><p class="text-[10px] opacity-80">বিশ্বাসের ঠিকানা</p></div>
-    <a href="#" class="text-sm font-bold hover:underline">লগইন</a>
+    <a href="index.html" class="text-sm font-bold hover:underline"><i class="fas fa-arrow-left"></i> рж╣рзЛржо</a>
+    <div class="text-center"><h1 class="text-xl font-bold">Astha <span class="text-yellow-300">ржЖрж╕рзНржерж╛</span></h1><p class="text-[10px] opacity-80">ржмрж┐рж╢рзНржмрж╛рж╕рзЗрж░ ржарж┐ржХрж╛ржирж╛</p></div>
+    <a href="#" class="text-sm font-bold hover:underline">рж▓ржЧржЗржи</a>
   </div>
 </header>
 
 <section class="py-6 px-4">
   <div class="container mx-auto max-w-6xl grid md:grid-cols-2 gap-6">
     <div class="bg-white shadow-md rounded-xl p-5">
-      <h3 class="text-lg font-bold mb-3 border-b pb-2 text-[#026c3e]">📦 অর্ডার সারাংশ</h3>
+      <h3 class="text-lg font-bold mb-3 border-b pb-2 text-[#026c3e]">ЁЯУж ржЕрж░рзНржбрж╛рж░ рж╕рж╛рж░рж╛ржВрж╢</h3>
       <div id="orderSummary" class="text-sm space-y-3"></div>
     </div>
     <div class="bg-white shadow-md rounded-xl p-5">
-      <h3 class="text-lg font-bold mb-3 border-b pb-2 text-[#026c3e]">👤 ডেলিভারি তথ্য</h3>
+      <h3 class="text-lg font-bold mb-3 border-b pb-2 text-[#026c3e]">ЁЯСд ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рждржерзНржп</h3>
       <div class="mb-4 p-3 bg-[#e6f4ec] rounded-xl space-y-1 text-sm">
-        <div><i class="fas fa-map-marker-alt text-[#02804a] w-5"></i> <strong>জেলা:</strong> <span id="displayDistrict">—</span></div>
-        <div><i class="fas fa-map-pin text-[#02804a] w-5"></i> <strong>উপজেলা:</strong> <span id="displayUpazila">—</span></div>
-        <div><i class="fas fa-flag-checkered text-[#02804a] w-5"></i> <strong>ইউনিয়ন:</strong> <span id="displayUnion">—</span></div>
+        <div><i class="fas fa-map-marker-alt text-[#02804a] w-5"></i> <strong>ржЬрзЗрж▓рж╛:</strong> <span id="displayDistrict">тАФ</span></div>
+        <div><i class="fas fa-map-pin text-[#02804a] w-5"></i> <strong>ржЙржкржЬрзЗрж▓рж╛:</strong> <span id="displayUpazila">тАФ</span></div>
+        <div><i class="fas fa-flag-checkered text-[#02804a] w-5"></i> <strong>ржЗржЙржирж┐ржпрж╝ржи:</strong> <span id="displayUnion">тАФ</span></div>
       </div>
       <form id="checkoutForm">
-        <div class="info-row"><div class="info-label">👤 নাম <span class="required-star">*</span></div><div class="info-input"><input type="text" id="name" required></div></div>
-        <div class="info-row"><div class="info-label">👨 পিতা/স্বামীর নাম</div><div class="info-input"><input type="text" id="fatherName"></div></div>
-        <div class="info-row"><div class="info-label">🏡 গ্রাম <span class="required-star">*</span></div><div class="info-input"><input type="text" id="village" required></div></div>
-        <div class="info-row"><div class="info-label">🏠 পাড়া/মহল্লা</div><div class="info-input"><input type="text" id="para"></div></div>
-        <div class="info-row"><div class="info-label">📞 মোবাইল নাম্বার <span class="required-star">*</span></div><div class="info-input"><input type="tel" id="mobile" required maxlength="11"></div></div>
-        <div class="info-row"><div class="info-label">📝 বিস্তারিত ঠিকানা</div><div class="info-input"><textarea id="address" rows="2"></textarea></div></div>
-        <div class="mt-4"><label class="block text-sm font-bold mb-2 text-gray-700">💰 পেমেন্ট মেথড</label>
+        <div class="info-row"><div class="info-label">ЁЯСд ржирж╛ржо <span class="required-star">*</span></div><div class="info-input"><input type="text" id="name" required></div></div>
+        <div class="info-row"><div class="info-label">ЁЯСи ржкрж┐рждрж╛/рж╕рзНржмрж╛ржорзАрж░ ржирж╛ржо</div><div class="info-input"><input type="text" id="fatherName"></div></div>
+        <div class="info-row"><div class="info-label">ЁЯПб ржЧрзНрж░рж╛ржо <span class="required-star">*</span></div><div class="info-input"><input type="text" id="village" required></div></div>
+        <div class="info-row"><div class="info-label">ЁЯПа ржкрж╛ржбрж╝рж╛/ржорж╣рж▓рзНрж▓рж╛</div><div class="info-input"><input type="text" id="para"></div></div>
+        <div class="info-row"><div class="info-label">ЁЯУЮ ржорзЛржмрж╛ржЗрж▓ ржирж╛ржорзНржмрж╛рж░ <span class="required-star">*</span></div><div class="info-input"><input type="tel" id="mobile" required maxlength="11"></div></div>
+        <div class="info-row"><div class="info-label">ЁЯУЭ ржмрж┐рж╕рзНрждрж╛рж░рж┐ржд ржарж┐ржХрж╛ржирж╛</div><div class="info-input"><textarea id="address" rows="2"></textarea></div></div>
+        <div class="mt-4"><label class="block text-sm font-bold mb-2 text-gray-700">ЁЯТ░ ржкрзЗржорзЗржирзНржЯ ржорзЗржержб</label>
           <div class="flex flex-wrap gap-3">
-            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="cash" checked> <i class="fas fa-money-bill-wave text-[#02804a]"></i> ক্যাশ অন ডেলিভারি</label>
-            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="bkash"> <i class="fab fa-bkash text-pink-500"></i> বিকাশ</label>
-            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="nagad"> <i class="fas fa-mobile-alt text-orange-500"></i> নগদ</label>
-            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="rocket"> <i class="fas fa-rocket text-purple-500"></i> রকেট</label>
+            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="cash" checked> <i class="fas fa-money-bill-wave text-[#02804a]"></i> ржХрзНржпрж╛рж╢ ржЕржи ржбрзЗрж▓рж┐ржнрж╛рж░рж┐</label>
+            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="bkash"> <i class="fab fa-bkash text-pink-500"></i> ржмрж┐ржХрж╛рж╢</label>
+            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="nagad"> <i class="fas fa-mobile-alt text-orange-500"></i> ржиржЧржж</label>
+            <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="rocket"> <i class="fas fa-rocket text-purple-500"></i> рж░ржХрзЗржЯ</label>
           </div>
         </div>
-        <button type="submit" class="w-full mt-5 bg-[#02804a] hover:bg-[#026c3e] text-white py-3 rounded-xl text-base font-bold shadow transition">✅ অর্ডার কনফার্ম করুন</button>
+        <button type="submit" class="w-full mt-5 bg-[#02804a] hover:bg-[#026c3e] text-white py-3 rounded-xl text-base font-bold shadow transition">тЬЕ ржЕрж░рзНржбрж╛рж░ ржХржиржлрж╛рж░рзНржо ржХрж░рзБржи</button>
       </form>
     </div>
   </div>
 </section>
 
-<footer class="bg-[#1D5C87] text-white mt-8 py-6 text-center text-sm"><p>© ২০২৫ Astha আস্থা | বিশ্বাসের ঠিকানা</p></footer>
+<footer class="bg-[#1D5C87] text-white mt-8 py-6 text-center text-sm"><p>┬й рзирзжрзирзл Astha ржЖрж╕рзНржерж╛ | ржмрж┐рж╢рзНржмрж╛рж╕рзЗрж░ ржарж┐ржХрж╛ржирж╛</p></footer>
 
 <script>
-function toBanglaDigits(num) { return Math.round(num).toString().replace(/[0-9]/g, d => "০১২৩৪৫৬৭৮৯"[d]); }
+function toBanglaDigits(num) { return Math.round(num).toString().replace(/[0-9]/g, d => "рзжрззрзирзйрзкрзлрзмрзнрзорзп"[d]); }
 function toEnglishDigits(str) {
-  const ban = "০১২৩৪৫৬৭৮৯", eng = "0123456789";
+  const ban = "рзжрззрзирзйрзкрзлрзмрзнрзорзп", eng = "0123456789";
   return str.split("").map(ch => { let idx = ban.indexOf(ch); return idx > -1 ? eng[idx] : ch; }).join("");
 }
 function getItemTotal(item) {
   let qty = parseFloat(item.qty);
   if (isNaN(qty) || qty <= 0) return 0;
-  if (item.unit === "গ্রাম") return (qty * item.pricePerUnit) / 1000;
-  if (item.unit === "টি") return qty * item.pricePerUnit;
+  if (item.unit === "ржЧрзНрж░рж╛ржо") return (qty * item.pricePerUnit) / 1000;
+  if (item.unit === "ржЯрж┐") return qty * item.pricePerUnit;
   return qty * item.pricePerUnit;
 }
 let cart = [];
 function loadCart() {
   try { const savedCart = localStorage.getItem('astha_cart') || sessionStorage.getItem('db_cart'); if (savedCart) cart = JSON.parse(savedCart); } catch(e) { cart = []; }
   if (!Array.isArray(cart)) cart = [];
-  // পুরনো ভাঙা কার্ট আইটেম মেরামত (যদি pricePerUnit না থাকে)
+  // ржкрзБрж░ржирзЛ ржнрж╛ржЩрж╛ ржХрж╛рж░рзНржЯ ржЖржЗржЯрзЗржо ржорзЗрж░рж╛ржоржд (ржпржжрж┐ pricePerUnit ржирж╛ ржерж╛ржХрзЗ)
   let repaired = false;
   let allProducts = [];
   try { allProducts = JSON.parse(localStorage.getItem('astha_products') || '[]'); } catch(e) {}
@@ -101,14 +101,14 @@ function updateTotals() {
   cart.forEach(item => { subtotal += getItemTotal(item); });
   const delivery = subtotal > 500 ? 0 : 40;
   const total = subtotal + delivery;
-  document.getElementById('subtotalValue').innerText = `৳ ${toBanglaDigits(subtotal)}`;
-  document.getElementById('deliveryValue').innerHTML = delivery === 0 ? 'ফ্রি' : `৳ ${toBanglaDigits(delivery)}`;
-  document.getElementById('totalValue').innerText = `৳ ${toBanglaDigits(total)}`;
+  document.getElementById('subtotalValue').innerText = `рз│ ${toBanglaDigits(subtotal)}`;
+  document.getElementById('deliveryValue').innerHTML = delivery === 0 ? 'ржлрзНрж░рж┐' : `рз│ ${toBanglaDigits(delivery)}`;
+  document.getElementById('totalValue').innerText = `рз│ ${toBanglaDigits(total)}`;
 }
 function updateItemUI(index) {
   const item = cart[index];
   const priceSpan = document.getElementById(`price-${index}`);
-  if (priceSpan) priceSpan.innerText = `৳ ${toBanglaDigits(getItemTotal(item))}`;
+  if (priceSpan) priceSpan.innerText = `рз│ ${toBanglaDigits(getItemTotal(item))}`;
   updateTotals();
 }
 function handleQtyChange(index, event) {
@@ -121,7 +121,7 @@ function handleUnitChange(index, event) {
   updateItemUI(index);
 }
 function removeItem(index) {
-  if (confirm('এই পণ্যটি সরাতে চান?')) {
+  if (confirm('ржПржЗ ржкржгрзНржпржЯрж┐ рж╕рж░рж╛рждрзЗ ржЪрж╛ржи?')) {
     cart.splice(index, 1);
     if (cart.length === 0) { localStorage.removeItem('astha_cart'); sessionStorage.removeItem('db_cart'); }
     renderOrderSummary();
@@ -130,7 +130,7 @@ function removeItem(index) {
 function renderOrderSummary() {
   const container = document.getElementById("orderSummary");
   if (!container) return;
-  if (cart.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 py-4">🛒 আপনার কার্ট খালি। <a href="index.html" class="text-[#02804a] underline">পণ্য কিনুন</a></p>'; return; }
+  if (cart.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 py-4">ЁЯЫТ ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯ ржЦрж╛рж▓рж┐ред <a href="index.html" class="text-[#02804a] underline">ржкржгрзНржп ржХрж┐ржирзБржи</a></p>'; return; }
   let itemsHtml = '';
   cart.forEach((item, idx) => {
     itemsHtml += `
@@ -143,16 +143,16 @@ function renderOrderSummary() {
               <div class="flex items-center gap-2 mt-2 flex-wrap">
                 <input type="text" value="${item.qty}" class="qty-input border rounded-lg px-2 py-1 text-center" onchange="handleQtyChange(${idx}, event)" onkeyup="this.onchange()" onblur="this.onchange()">
                 <select onchange="handleUnitChange(${idx}, event)" class="border rounded-lg px-2 py-1 text-sm bg-white">
-                  <option value="কেজি" ${item.unit === 'কেজি' ? 'selected' : ''}>কেজি</option>
-                  <option value="গ্রাম" ${item.unit === 'গ্রাম' ? 'selected' : ''}>গ্রাম</option>
-                  <option value="টি" ${item.unit === 'টি' ? 'selected' : ''}>টি</option>
+                  <option value="ржХрзЗржЬрж┐" ${item.unit === 'ржХрзЗржЬрж┐' ? 'selected' : ''}>ржХрзЗржЬрж┐</option>
+                  <option value="ржЧрзНрж░рж╛ржо" ${item.unit === 'ржЧрзНрж░рж╛ржо' ? 'selected' : ''}>ржЧрзНрж░рж╛ржо</option>
+                  <option value="ржЯрж┐" ${item.unit === 'ржЯрж┐' ? 'selected' : ''}>ржЯрж┐</option>
                 </select>
                 <button onclick="removeItem(${idx})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
               </div>
-              <div class="text-xs text-gray-400 mt-1">প্রতি কেজি: ${item.pricePerUnit} টাকা</div>
+              <div class="text-xs text-gray-400 mt-1">ржкрзНрж░рждрж┐ ржХрзЗржЬрж┐: ${item.pricePerUnit} ржЯрж╛ржХрж╛</div>
             </div>
           </div>
-          <div class="font-bold text-[#026c3e] min-w-[70px] text-right" id="price-${idx}">৳ ${toBanglaDigits(getItemTotal(item))}</div>
+          <div class="font-bold text-[#026c3e] min-w-[70px] text-right" id="price-${idx}">рз│ ${toBanglaDigits(getItemTotal(item))}</div>
         </div>
       </div>
     `;
@@ -161,9 +161,9 @@ function renderOrderSummary() {
     <div class="space-y-3">
       ${itemsHtml}
       <div class="pt-3 mt-2 border-t-2 border-[#a8d8bd]">
-        <div class="flex justify-between text-sm"><span>সাবটোটাল</span><span id="subtotalValue">৳ ০</span></div>
-        <div class="flex justify-between text-sm"><span>ডেলিভারি চার্জ</span><span id="deliveryValue">৳ ০</span></div>
-        <div class="flex justify-between text-lg font-bold text-[#026c3e] mt-2"><span>মোট দাম</span><span id="totalValue">৳ ০</span></div>
+        <div class="flex justify-between text-sm"><span>рж╕рж╛ржмржЯрзЛржЯрж╛рж▓</span><span id="subtotalValue">рз│ рзж</span></div>
+        <div class="flex justify-between text-sm"><span>ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЪрж╛рж░рзНржЬ</span><span id="deliveryValue">рз│ рзж</span></div>
+        <div class="flex justify-between text-lg font-bold text-[#026c3e] mt-2"><span>ржорзЛржЯ ржжрж╛ржо</span><span id="totalValue">рз│ рзж</span></div>
       </div>
     </div>
   `;
@@ -172,14 +172,14 @@ function renderOrderSummary() {
 }
 function submitOrder(event) {
   event.preventDefault();
-  if (cart.length === 0) { alert('⚠️ আপনার কার্ট খালি। আগে পণ্য যোগ করুন।'); window.location.href = 'index.html'; return; }
+  if (cart.length === 0) { alert('тЪая╕П ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯ ржЦрж╛рж▓рж┐ред ржЖржЧрзЗ ржкржгрзНржп ржпрзЛржЧ ржХрж░рзБржиред'); window.location.href = 'index.html'; return; }
   let validItems = cart.filter(item => { let qty = parseFloat(item.qty); return !isNaN(qty) && qty > 0; });
-  if (validItems.length === 0) { alert('⚠️ দয়া করে কমপক্ষে একটি পণ্য অর্ডার করুন।'); return; }
+  if (validItems.length === 0) { alert('тЪая╕П ржжржпрж╝рж╛ ржХрж░рзЗ ржХржоржкржХрзНрж╖рзЗ ржПржХржЯрж┐ ржкржгрзНржп ржЕрж░рзНржбрж╛рж░ ржХрж░рзБржиред'); return; }
   const name = document.getElementById('name').value.trim();
   const village = document.getElementById('village').value.trim();
   const mobile = toEnglishDigits(document.getElementById('mobile').value.trim());
-  if (!name || !village || !mobile) { alert('⚠️ অনুগ্রহ করে নাম, গ্রাম ও মোবাইল নম্বর দিন।'); return; }
-  if (!/^01[3-9][0-9]{8}$/.test(mobile)) { alert('⚠️ সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন। (যেমন: 01712345678)'); return; }
+  if (!name || !village || !mobile) { alert('тЪая╕П ржЕржирзБржЧрзНрж░рж╣ ржХрж░рзЗ ржирж╛ржо, ржЧрзНрж░рж╛ржо ржУ ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ ржжрж┐ржиред'); return; }
+  if (!/^01[3-9][0-9]{8}$/.test(mobile)) { alert('тЪая╕П рж╕ржарж┐ржХ рззрзз ржбрж┐ржЬрж┐ржЯрзЗрж░ ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ ржжрж┐ржиред (ржпрзЗржоржи: 01712345678)'); return; }
   const orderData = {
     id: Date.now(),
     district: document.getElementById('displayDistrict').innerText,
@@ -194,7 +194,7 @@ function submitOrder(event) {
     payment: document.querySelector('input[name="payment"]:checked')?.value || 'cash',
     orderDate: new Date().toLocaleString('bn-BD'),
     items: validItems.map(item => ({ name: item.name, qty: item.qty, unit: item.unit, pricePerUnit: item.pricePerUnit, total: getItemTotal(item) })),
-    total: document.getElementById('totalValue')?.innerText || '০',
+    total: document.getElementById('totalValue')?.innerText || 'рзж',
     status: 'pending'
   };
   let allOrders = [];
@@ -203,7 +203,7 @@ function submitOrder(event) {
   localStorage.setItem('astha_orders', JSON.stringify(allOrders));
   localStorage.removeItem('astha_cart');
   sessionStorage.removeItem('db_cart');
-  alert('✅ আপনার অর্ডার সফল হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।');
+  alert('тЬЕ ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░ рж╕ржлрж▓ рж╣рзЯрзЗржЫрзЗ! ржЖржорж░рж╛ рж╢рзАржШрзНрж░ржЗ ржпрзЛржЧрж╛ржпрзЛржЧ ржХрж░ржмред');
   window.location.href = 'order-confirmation.html';
 }
 function loadDeliveryInfo() {
@@ -211,17 +211,17 @@ function loadDeliveryInfo() {
     const saved = sessionStorage.getItem('deliveryInfo');
     if (saved) {
       const info = JSON.parse(saved);
-      document.getElementById('displayDistrict').innerText = info.district || '—';
-      document.getElementById('displayUpazila').innerText = info.upazila || '—';
-      document.getElementById('displayUnion').innerText = info.union || '—';
+      document.getElementById('displayDistrict').innerText = info.district || 'тАФ';
+      document.getElementById('displayUpazila').innerText = info.upazila || 'тАФ';
+      document.getElementById('displayUnion').innerText = info.union || 'тАФ';
     } else {
-      document.getElementById('displayDistrict').innerText = 'নির্বাচিত হয়নি';
-      document.getElementById('displayUpazila').innerText = 'নির্বাচিত হয়নি';
-      document.getElementById('displayUnion').innerText = 'নির্বাচিত হয়নি';
+      document.getElementById('displayDistrict').innerText = 'ржирж┐рж░рзНржмрж╛ржЪрж┐ржд рж╣ржпрж╝ржирж┐';
+      document.getElementById('displayUpazila').innerText = 'ржирж┐рж░рзНржмрж╛ржЪрж┐ржд рж╣ржпрж╝ржирж┐';
+      document.getElementById('displayUnion').innerText = 'ржирж┐рж░рзНржмрж╛ржЪрж┐ржд рж╣ржпрж╝ржирж┐';
     }
   } catch(e) {}
 }
 document.addEventListener('DOMContentLoaded', () => { loadCart(); loadDeliveryInfo(); document.getElementById('checkoutForm').addEventListener('submit', submitOrder); });
 </script>
 </body>
-</html>
+                                                                                                                                                                        </html>
