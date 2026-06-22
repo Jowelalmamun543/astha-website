@@ -275,7 +275,7 @@ footer{background:var(--blue);color:white;margin-top:8px;}
 </header>
 
 <!-- HERO -->
-<div class="hero reveal-section"><div class="hero-content"><h2>স্বাগতম <span>Astha আস্থায়</span> 🛒</h2><p id="hero-sub">বিশ্বাসের ঠিকানা — তাজা বাজার আপনার দরজায়</p><button class="hero-btn" onclick="openMarketModal()">📝 বাজারের তালিকা লিখে বা ছবি দিন</button></div></div>
+<div class="hero reveal-section"><div class="hero-content"><h2>স্বাগতম <span>Astha আস্থায়</span> 🛒</h2><p id="hero-sub">বিশ্বাসের ঠিকানা — তাজা বাজার আপনার দরজায়</p><button class="hero-btn" onclick="openMarketModal()">লিখে বা লিস্ট দিয়ে পণ্য ক্রয় করতে চাইলে <span style="text-decoration:underline;font-weight:800;">এখানে ক্লিক করুন</span></button></div></div>
 
 <!-- MODAL -->
 <div id="marketModal" class="modal"><div class="modal-content"><button class="modal-close" onclick="closeMarketModal()">&times;</button><h3>📝 বাজারের তালিকা দিন</h3><div class="delivery-box"><div class="addr-row"><label>জেলা :</label><span class="readonly" id="modal-district">—</span></div><div class="addr-row"><label>উপজেলা :</label><span class="readonly" id="modal-upazila">—</span></div><div class="addr-row"><label>ইউনিয়ন :</label><span class="readonly" id="modal-union">—</span></div><div class="addr-row"><label>👤 নাম :</label><input type="text" id="modal-name" placeholder="আপনার নাম"></div><div class="addr-row"><label>👨 পিতা/স্বামী :</label><input type="text" id="modal-father" placeholder="পিতা/স্বামীর নাম"></div><div class="addr-row"><label>🏡 গ্রাম :</label><input type="text" id="modal-village" placeholder="গ্রাম"></div><div class="addr-row"><label>🏠 পাড়া :</label><input type="text" id="modal-para" placeholder="পাড়া/মহল্লা"></div><div class="addr-row"><label>📞 মোবাইল :</label><input type="tel" id="modal-mobile" placeholder="01XXXXXXXXX" maxlength="11"></div></div><textarea id="marketList" rows="3" placeholder="যেমন: ২ কেজি আলু, ১ কেজি পেঁয়াজ, ১ কেজি মাছ..."></textarea><div class="upload-buttons-row" style="display:flex;gap:10px;margin:10px 0;"><button type="button" class="upload-choice-btn" onclick="document.getElementById('cameraInput').click()" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 8px;border:2px dashed #02804a;border-radius:12px;background:#f0fdf4;color:#02804a;font-weight:700;cursor:pointer;"><i class="fas fa-camera" style="font-size:20px;"></i><span style="font-size:12px;">📷 ক্যামেরা</span></button><button type="button" class="upload-choice-btn" onclick="document.getElementById('galleryInput').click()" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 8px;border:2px dashed #02804a;border-radius:12px;background:#f0fdf4;color:#02804a;font-weight:700;cursor:pointer;"><i class="fas fa-image" style="font-size:20px;"></i><span style="font-size:12px;">🖼️ গ্যালারি</span></button><input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none" multiple><input type="file" id="galleryInput" accept="image/*" style="display:none" multiple></div><div id="imagePreview"></div><label>📞 পণ্যের নাম ও দাম জানানোর জন্য হোয়াটসঅ্যাপ নম্বর :</label><input type="tel" id="whatsappNumber" class="whatsapp-input" placeholder="01XXXXXXXXX" maxlength="11" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:12px;margin:8px 0;"><button class="submit-btn" onclick="submitOrder()">📤 বাজারের তালিকা জমা দিন</button></div></div>
@@ -593,8 +593,23 @@ function handleImageFiles(fileList){
   for (let file of fileList) {
     const reader = new FileReader();
     reader.onload = function(ev){
-      uploadedImages.push(ev.target.result);
-      renderImagePreview();
+      // ছবি compress করে ছোট করে নেওয়া (max 600px, quality 0.5)
+      const img = new Image();
+      img.onload = function(){
+        const canvas = document.createElement('canvas');
+        const maxSize = 600;
+        let w = img.width, h = img.height;
+        if (w > maxSize || h > maxSize) {
+          if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+          else { w = Math.round(w * maxSize / h); h = maxSize; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const compressed = canvas.toDataURL('image/jpeg', 0.5);
+        uploadedImages.push(compressed);
+        renderImagePreview();
+      };
+      img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -608,40 +623,66 @@ document.getElementById('cameraInput')?.addEventListener('change', function(e){ 
 document.getElementById('galleryInput')?.addEventListener('change', function(e){ handleImageFiles(e.target.files); this.value=''; });
 
 function submitOrder(){
+  const info = savedInfo || JSON.parse(sessionStorage.getItem('deliveryInfo') || '{}');
+  const name = document.getElementById('modal-name').value.trim();
+  const mobile = document.getElementById('modal-mobile').value.trim();
+  if (!name || !mobile) { alert('⚠️ অনুগ্রহ করে নাম ও মোবাইল নম্বর দিন।'); return; }
   const orderData = {
     id: Date.now(),
-    location: savedInfo || JSON.parse(sessionStorage.getItem('deliveryInfo') || '{}'),
-    name: document.getElementById('modal-name').value,
-    father: document.getElementById('modal-father').value,
-    village: document.getElementById('modal-village').value,
-    para: document.getElementById('modal-para').value,
-    mobile: document.getElementById('modal-mobile').value,
-    list: document.getElementById('marketList').value,
-    whatsapp: document.getElementById('whatsappNumber').value,
-    timestamp: new Date().toLocaleString()
+    status: 'pending',
+    timestamp: new Date().toLocaleString(),
+    district: info.district || '—',
+    upazila: info.upazila || '—',
+    union: info.union || '—',
+    name: name,
+    father: document.getElementById('modal-father').value.trim(),
+    village: document.getElementById('modal-village').value.trim(),
+    para: document.getElementById('modal-para').value.trim(),
+    mobile: mobile,
+    address: [
+      document.getElementById('modal-village').value.trim(),
+      document.getElementById('modal-para').value.trim(),
+      info.union||'', info.upazila||'', info.district||''
+    ].filter(Boolean).join(', '),
+    list: document.getElementById('marketList').value.trim(),
+    whatsapp: document.getElementById('whatsappNumber').value.trim(),
   };
+  // ছবি — সরাসরি সেভ (compress step বাদ দেওয়া হয়েছে, মোবাইলে ব্লক করছিল)
   if (uploadedImages.length > 0) {
     orderData.imageData = uploadedImages[0];
-    orderData.images = uploadedImages.slice();
   }
   saveOrder(orderData);
 }
 
 function saveOrder(orderData) {
-  let orders = JSON.parse(localStorage.getItem('astha_orders') || '[]');
-  orders.unshift(orderData);
-  localStorage.setItem('astha_orders', JSON.stringify(orders));
-  alert('আপনার বাজারের তালিকা জমা হয়েছে। আমরা দাম যোগ করে হোয়াটসঅ্যাপে জানাবো।');
-  closeMarketModal();
-  document.getElementById('modal-name').value = '';
-  document.getElementById('modal-father').value = '';
-  document.getElementById('modal-village').value = '';
-  document.getElementById('modal-para').value = '';
-  document.getElementById('modal-mobile').value = '';
-  document.getElementById('marketList').value = '';
-  document.getElementById('whatsappNumber').value = '';
-  uploadedImages = [];
-  document.getElementById('imagePreview').innerHTML = '';
+  try {
+    let orders = JSON.parse(localStorage.getItem('astha_orders') || '[]');
+    orders.unshift(orderData);
+    localStorage.setItem('astha_orders', JSON.stringify(orders));
+    alert('✅ আপনার বাজারের তালিকা জমা হয়েছে!\nআমরা দাম যোগ করে হোয়াটসঅ্যাপে জানাবো।');
+    closeMarketModal();
+    ['modal-name','modal-father','modal-village','modal-para','modal-mobile','marketList','whatsappNumber'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    uploadedImages = [];
+    const preview = document.getElementById('imagePreview');
+    if (preview) preview.innerHTML = '';
+  } catch(e) {
+    if (e.name === 'QuotaExceededError') {
+      // ছবি বাদ দিয়ে আবার চেষ্টা
+      delete orderData.imageData;
+      let orders = JSON.parse(localStorage.getItem('astha_orders') || '[]');
+      orders.unshift(orderData);
+      localStorage.setItem('astha_orders', JSON.stringify(orders));
+      alert('✅ তালিকা জমা হয়েছে! (ছবি সংরক্ষণের জায়গা না থাকায় ছবি বাদ দেওয়া হয়েছে)');
+      closeMarketModal();
+      ['modal-name','modal-father','modal-village','modal-para','modal-mobile','marketList','whatsappNumber'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+      uploadedImages = [];
+      const preview = document.getElementById('imagePreview');
+      if (preview) preview.innerHTML = '';
+    } else {
+      alert('⚠️ জমা দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+      console.error('saveOrder error:', e);
+    }
+  }
 }
 
 const observer=new IntersectionObserver(entries=>{ entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}); },{threshold:0});
