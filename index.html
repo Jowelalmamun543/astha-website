@@ -470,7 +470,26 @@ function DB_addToCart(product,qty=1){
   DB_saveCart(cart);
   DB_updateCartUI();
 }
-function DB_updateCartUI(){const cart=DB_getCart();const count=cart.reduce((s,i)=>s+(parseFloat(i.qty)||0),0);const total=cart.reduce((s,i)=>s+((parseFloat(i.pricePerUnit)||0)*(parseFloat(i.qty)||0)),0);const c=document.getElementById('cart-count');const p=document.getElementById('cart-price');if(c)c.textContent=toBn(Math.round(count))+' টি';if(p)p.textContent='৳ '+toBn(Math.round(total));}
+function DB_updateCartUI(){
+  const cart=DB_getCart();
+  // কার্টে আইটেম সংখ্যা (পিস হিসেবে, গ্রাম → কেজিতে রূপান্তর করে না)
+  const count = cart.length;
+  // মোট দাম — unit অনুযায়ী সঠিক হিসাব
+  const total = cart.reduce((s, i) => {
+    const qty = parseFloat(i.qty) || 0;
+    const price = parseFloat(i.pricePerUnit) || 0;
+    const unit = (i.unit || '').toLowerCase();
+    // গ্রাম হলে ১০০০ দিয়ে ভাগ করে কেজিতে রূপান্তর
+    if (unit === 'গ্রাম' || unit === 'gram' || unit === 'g') {
+      return s + (qty / 1000) * price;
+    }
+    return s + qty * price;
+  }, 0);
+  const c=document.getElementById('cart-count');
+  const p=document.getElementById('cart-price');
+  if(c) c.textContent=toBn(count)+' টি';
+  if(p) p.textContent='৳ '+toBn(Math.round(total));
+}
 function DB_applyUnionPrices(products,union){if(!union)return products;return products.map(p=>{const c=DB_getPrice(p.id,union);return{...p,displayPrice:c||p.price};});}
 
 function DB_getActiveUnions(){ try { const saved = localStorage.getItem('active_unions'); if (saved) return JSON.parse(saved); return { 'দিগপাইত': true }; } catch(e) { return { 'দিগপাইত': true }; } }
