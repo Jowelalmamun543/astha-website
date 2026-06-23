@@ -112,7 +112,7 @@ function addToCart(id){
   const btn = document.querySelector(`[onclick="addToCart(${id})"]`);
   if(btn){ btn.textContent='✅ যোগ হয়েছে'; btn.classList.add('added'); setTimeout(()=>{ btn.textContent='🛒 কার্টে যোগ'; btn.classList.remove('added'); },1200); }
 }
-function updateCartBadge(){ const cart=getCart(); const count=cart.reduce((s,i)=>s+(parseFloat(i.qty)||1),0); document.getElementById('cartBadge').textContent=Math.round(count); }
+function updateCartBadge(){ const cart=getCart(); document.getElementById('cartBadge').textContent=cart.length; }
 function filterProducts(){ const q=document.getElementById('searchInput').value.trim().toLowerCase(); if(!q){ renderProducts(allProducts); return; } const filtered=allProducts.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)); renderProducts(filtered); }
 window.addEventListener('storage', function(e){ if(e.key==='astha_products') loadProducts(); if(e.key==='astha_cart') updateCartBadge(); });
 document.addEventListener('DOMContentLoaded', loadProducts);

@@ -167,9 +167,9 @@ function saveCart(cart) {
 }
 function updateCartBadge() {
   const cart = getCart();
-  const count = cart.reduce((s, i) => s + (parseFloat(i.qty) || 1), 0);
+  // সংখ্যা = কার্টে কতটি আলাদা পণ্য আছে
   const badge = document.getElementById('cartBadge');
-  if (badge) badge.textContent = Math.round(count);
+  if (badge) badge.textContent = cart.length;
 }
 function addToCart(product, qty, unit) {
   let cart = getCart();
