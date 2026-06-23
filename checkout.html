@@ -96,14 +96,23 @@ function loadCart() {
   if (repaired) { localStorage.setItem('astha_cart', JSON.stringify(cart)); sessionStorage.setItem('db_cart', JSON.stringify(cart)); }
   renderOrderSummary();
 }
+function getDeliveryCharge(subtotal) {
+  return 30; // সকল ক্ষেত্রে ৳৩০
+}
 function updateTotals() {
   let subtotal = 0;
   cart.forEach(item => { subtotal += getItemTotal(item); });
-  const delivery = subtotal > 500 ? 0 : 40;
+  const delivery = getDeliveryCharge(subtotal);
   const total = subtotal + delivery;
-  document.getElementById('subtotalValue').innerText = `৳ ${toBanglaDigits(subtotal)}`;
-  document.getElementById('deliveryValue').innerHTML = delivery === 0 ? 'ফ্রি' : `৳ ${toBanglaDigits(delivery)}`;
-  document.getElementById('totalValue').innerText = `৳ ${toBanglaDigits(total)}`;
+  document.getElementById('subtotalValue').innerText = `৳ ${toBanglaDigits(Math.round(subtotal))}`;
+  document.getElementById('deliveryValue').innerHTML = delivery === 0
+    ? '<span class="text-[#02804a] font-bold">ফ্রি 🎉</span>'
+    : `৳ ${toBanglaDigits(delivery)}`;
+  document.getElementById('totalValue').innerText = `৳ ${toBanglaDigits(Math.round(total))}`;
+  // submitOrder-এ delivery charge পাঠানোর জন্য সেভ করে রাখছি
+  window._currentDelivery = delivery;
+  window._currentSubtotal = Math.round(subtotal);
+  window._currentTotal = Math.round(total);
 }
 function updateItemUI(index) {
   const item = cart[index];
@@ -163,6 +172,7 @@ function renderOrderSummary() {
       <div class="pt-3 mt-2 border-t-2 border-[#a8d8bd]">
         <div class="flex justify-between text-sm"><span>সাবটোটাল</span><span id="subtotalValue">৳ ০</span></div>
         <div class="flex justify-between text-sm"><span>ডেলিভারি চার্জ</span><span id="deliveryValue">৳ ০</span></div>
+        <div class="text-xs text-gray-400 mt-1">* সকল অর্ডারে ডেলিভারি চার্জ ৳৩০</div>
         <div class="flex justify-between text-lg font-bold text-[#026c3e] mt-2"><span>মোট দাম</span><span id="totalValue">৳ ০</span></div>
       </div>
     </div>
@@ -193,8 +203,10 @@ function submitOrder(event) {
     address: document.getElementById('address').value,
     payment: document.querySelector('input[name="payment"]:checked')?.value || 'cash',
     orderDate: new Date().toLocaleString('bn-BD'),
-    items: validItems.map(item => ({ name: item.name, qty: item.qty, unit: item.unit, pricePerUnit: item.pricePerUnit, total: getItemTotal(item) })),
-    total: document.getElementById('totalValue')?.innerText || '০'
+    items: validItems.map(item => ({ name: item.name, qty: item.qty, unit: item.unit, pricePerUnit: item.pricePerUnit, total: Math.round(getItemTotal(item)) })),
+    subtotal: window._currentSubtotal || 0,
+    deliveryCharge: window._currentDelivery || 0,
+    total: '৳ ' + (window._currentTotal || 0)
   };
   let allOrders = [];
   try { const saved = localStorage.getItem('astha_orders'); if (saved) allOrders = JSON.parse(saved); } catch(e) {}
