@@ -37,6 +37,18 @@
 <footer class="bg-[#1D5C87] text-white mt-8 py-6 text-center text-sm"><p>© ২০২৫ Astha আস্থা | বিশ্বাসের ঠিকানা</p></footer>
 
 <script>
+const JSONBIN_KEY = '$2a$10$fqTT6ph40YSpg65.w2k2DOAwik.jdu5JlmCoYlJ.4FmyEZBA.meve';
+const JSONBIN_BIN = '6a3cd3e8f5f4af5e292d500f';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`;
+
+async function DB_getAllOrders() {
+  try {
+    const res = await fetch(JSONBIN_URL, { headers: { 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Meta': 'false' } });
+    const data = await res.json();
+    return data.orders || [];
+  } catch(e) { return JSON.parse(localStorage.getItem('astha_orders') || '[]'); }
+}
+
 function toBanglaDigits(num) { return num.toString().replace(/[0-9]/g, d => "০১২৩৪৫৬৭৮৯"[d]); }
 function getStatusBadge(status) {
   const statusMap = {
@@ -57,11 +69,14 @@ function getPaymentIcon(method) {
   };
   return icons[method] || '<i class="fas fa-credit-card"></i> অন্যান্য';
 }
-function loadOrders() {
+async function loadOrders() {
   const container = document.getElementById('ordersList');
   if (!container) return;
-  let orders = [];
-  try { const saved = localStorage.getItem('astha_orders'); if (saved) orders = JSON.parse(saved); } catch(e) { console.error('Error loading orders:', e); }
+  container.innerHTML = '<div class="text-center py-8 text-gray-400"><i class="fas fa-spinner fa-spin text-2xl mb-2"></i><p>অর্ডার লোড হচ্ছে...</p></div>';
+  const allOrders = await DB_getAllOrders();
+  // গ্রাহকের নিজের মোবাইল দিয়ে ফিল্টার
+  const myMobile = localStorage.getItem('last_order_mobile') || '';
+  const orders = myMobile ? allOrders.filter(o => o.mobile === myMobile || toEnglishDigits(o.mobile) === myMobile) : allOrders.slice(0, 5);
   if (!orders || orders.length === 0) {
     container.innerHTML = `<div class="text-center py-12"><i class="fas fa-inbox text-5xl text-gray-300 mb-3"></i><p class="text-gray-500">আপনার কোনো অর্ডার নেই।</p><a href="index.html" class="inline-block mt-4 bg-[#02804a] text-white px-4 py-2 rounded-lg text-sm">🛒 কেনাকাটা শুরু করুন</a></div>`;
     return;

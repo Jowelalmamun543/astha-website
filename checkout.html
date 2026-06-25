@@ -180,27 +180,56 @@ function renderOrderSummary() {
   container.innerHTML = html;
   updateTotals();
 }
-function submitOrder(event) {
+// ==================== JSONBin ====================
+const JSONBIN_KEY = '$2a$10$fqTT6ph40YSpg65.w2k2DOAwik.jdu5JlmCoYlJ.4FmyEZBA.meve';
+const JSONBIN_BIN = '6a3cd3e8f5f4af5e292d500f';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`;
+
+async function DB_saveOrder(order) {
+  try {
+    const res = await fetch(JSONBIN_URL, {
+      headers: { 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Meta': 'false' }
+    });
+    const data = await res.json();
+    const orders = data.orders || [];
+    orders.unshift(order);
+    const putRes = await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+      body: JSON.stringify({ orders })
+    });
+    if (!putRes.ok) throw new Error('Failed');
+    localStorage.setItem('astha_orders', JSON.stringify(orders));
+    return true;
+  } catch(e) {
+    const orders = JSON.parse(localStorage.getItem('astha_orders') || '[]');
+    orders.unshift(order);
+    localStorage.setItem('astha_orders', JSON.stringify(orders));
+    return false;
+  }
+}
+async function submitOrder(event) {
   event.preventDefault();
   if (cart.length === 0) { alert('⚠️ আপনার কার্ট খালি। আগে পণ্য যোগ করুন।'); window.location.href = 'index.html'; return; }
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '⏳ অর্ডার পাঠানো হচ্ছে...'; }
   let validItems = cart.filter(item => { let qty = parseFloat(item.qty); return !isNaN(qty) && qty > 0; });
   if (validItems.length === 0) { alert('⚠️ দয়া করে কমপক্ষে একটি পণ্য অর্ডার করুন।'); return; }
   const name = document.getElementById('name').value.trim();
   const village = document.getElementById('village').value.trim();
   const mobile = toEnglishDigits(document.getElementById('mobile').value.trim());
   if (!name || !village || !mobile) { alert('⚠️ অনুগ্রহ করে নাম, গ্রাম ও মোবাইল নম্বর দিন।'); return; }
-  if (!/^01[3-9][0-9]{8}$/.test(mobile)) { alert('⚠️ সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন। (যেমন: 01712345678)'); return; }
+  if (!/^01[3-9][0-9]{8}$/.test(mobile)) { alert('⚠️ সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন।'); return; }
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ অর্ডার হচ্ছে...'; }
   const orderData = {
-    id: Date.now(),
+    id: Date.now(), status: 'pending',
     district: document.getElementById('displayDistrict').innerText,
     upazila: document.getElementById('displayUpazila').innerText,
     union: document.getElementById('displayUnion').innerText,
-    name: name,
-    fatherName: document.getElementById('fatherName').value,
-    village: village,
-    para: document.getElementById('para').value,
-    mobile: mobile,
-    address: document.getElementById('address').value,
+    name, father: document.getElementById('fatherName')?.value || '',
+    village, para: document.getElementById('para')?.value || '',
+    mobile, address: document.getElementById('address')?.value || '',
     payment: document.querySelector('input[name="payment"]:checked')?.value || 'cash',
     orderDate: new Date().toLocaleString('bn-BD'),
     items: validItems.map(item => ({ name: item.name, qty: item.qty, unit: item.unit, pricePerUnit: item.pricePerUnit, total: Math.round(getItemTotal(item)) })),
@@ -208,13 +237,14 @@ function submitOrder(event) {
     deliveryCharge: window._currentDelivery || 0,
     total: '৳ ' + (window._currentTotal || 0)
   };
-  let allOrders = [];
-  try { const saved = localStorage.getItem('astha_orders'); if (saved) allOrders = JSON.parse(saved); } catch(e) {}
-  allOrders.unshift(orderData);
-  localStorage.setItem('astha_orders', JSON.stringify(allOrders));
+  sessionStorage.setItem('last_order', JSON.stringify(orderData));
+  localStorage.setItem('last_order_mobile', orderData.mobile);
+  const saved = await DB_saveOrder(orderData);
+  saveCart([]);
   localStorage.removeItem('astha_cart');
   sessionStorage.removeItem('db_cart');
-  alert('✅ আপনার অর্ডার সফল হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।');
+  if (!saved) alert('⚠️ ইন্টারনেট সমস্যা! অর্ডার লোকালি সেভ হয়েছে।');
+  if (submitBtn) { submitBtn.disabled = false; }
   window.location.href = 'order-confirmation.html';
 }
 function loadDeliveryInfo() {

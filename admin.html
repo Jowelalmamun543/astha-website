@@ -274,7 +274,32 @@ const defaultProducts = [
   {id:6,name:'খাঁটি মধু',cat:'অন্যান্য',price:350,unit:'২৫০গ্রাম',img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400',badge:'-১৬%'}
 ];
 
-function loadData() {
+// ==================== JSONBin ====================
+const JSONBIN_KEY = '$2a$10$fqTT6ph40YSpg65.w2k2DOAwik.jdu5JlmCoYlJ.4FmyEZBA.meve';
+const JSONBIN_BIN = '6a3cd3e8f5f4af5e292d500f';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`;
+
+async function DB_getOrders() {
+  try {
+    const res = await fetch(JSONBIN_URL, { headers: { 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Meta': 'false' } });
+    const data = await res.json();
+    const remote = data.orders || [];
+    localStorage.setItem('astha_orders', JSON.stringify(remote));
+    return remote;
+  } catch(e) { return JSON.parse(localStorage.getItem('astha_orders') || '[]'); }
+}
+
+async function DB_updateOrders(updatedOrders) {
+  try {
+    await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+      body: JSON.stringify({ orders: updatedOrders })
+    });
+    localStorage.setItem('astha_orders', JSON.stringify(updatedOrders));
+  } catch(e) { localStorage.setItem('astha_orders', JSON.stringify(updatedOrders)); }
+}
+async function loadData() {
   try {
     products = JSON.parse(localStorage.getItem('astha_products') || JSON.stringify(defaultProducts));
     categories = JSON.parse(localStorage.getItem('astha_categories') || JSON.stringify(defaultCategories));
@@ -300,6 +325,8 @@ function loadData() {
   renderReviews();
   renderUnionPricesList();
   loadDropdowns();
+  // JSONBin থেকে সর্বশেষ অর্ডার লোড করো
+  
 }
 
 function saveAll() {
@@ -311,6 +338,8 @@ function saveAll() {
   localStorage.setItem('astha_union_prices', JSON.stringify(unionPrices));
   localStorage.setItem('astha_orders', JSON.stringify(orders));
   localStorage.setItem('astha_settings', JSON.stringify(settings));
+  // অর্ডার পরিবর্তন হলে JSONBin-এও সেভ করো
+  
 }
 
 // ==================== ড্যাশবোর্ড ====================
@@ -390,12 +419,12 @@ function toggleOrderDetails(id) {
   if (el) el.classList.toggle('hidden');
 }
 
-function updateStatus(id, status) {
+async function updateStatus(id, status) {
   const o = orders.find(x => x.id == id);
-  if (o) { o.status = status; saveAll(); renderOrders(); updateDashboard(); alert('✅ স্ট্যাটাস আপডেট!'); }
+  if (o) { o.status = status; await DB_updateOrders(orders); saveAll(); renderOrders(); updateDashboard(); alert('✅ স্ট্যাটাস আপডেট!'); }
 }
 
-function deleteOrder(orderId) {
+async function deleteOrder(orderId) {
   const o = orders.find(x => x.id == orderId);
   if (!o) return;
   if (o.status !== 'delivered' && o.status !== 'cancelled') {
@@ -403,7 +432,7 @@ function deleteOrder(orderId) {
   }
   if (!confirm(`অর্ডার #${o.id} (${o.name}) সম্পূর্ণভাবে মুছে ফেলতে চান?\nএই কাজটি ফেরানো যাবে না।`)) return;
   orders = orders.filter(x => x.id != orderId);
-  saveAll();
+  await DB_updateOrders(orders); saveAll();
   renderOrders();
 }
 
@@ -721,7 +750,13 @@ function saveActiveUnions() {
 
 function logout() { sessionStorage.removeItem('admin_logged_in'); window.location.href = 'index.html'; }
 
-document.addEventListener('DOMContentLoaded', () => { loadData(); showTab('dashboard'); });
+document.addEventListener('DOMContentLoaded', () => { loadData(); showTab('dashboard');
+  // প্রতি ৩০ সেকেন্ডে নতুন অর্ডার চেক
+  setInterval(async () => {
+    const fresh = await DB_getOrders();
+    if (fresh.length !== orders.length) { orders = fresh; renderOrders(); updateDashboard(); }
+  }, 30000);
+});
 </script>
 </body>
 </html>
