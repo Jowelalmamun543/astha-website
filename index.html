@@ -159,10 +159,9 @@ textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:12px;margin
 
 /* CART WIDGET */
 #cart-widget{position:fixed;top:50%;right:0;transform:translateY(-50%) translateZ(0);z-index:9990;cursor:pointer;}
-.cart-box{background:linear-gradient(135deg,#02804a,#1D5C87);border-radius:14px 0 0 14px;padding:12px 10px 10px;text-align:center;box-shadow:-4px 0 18px rgba(0,0,0,.25);min-width:58px;}
-.cart-bag-icon{width:32px;height:32px;margin:0 auto 3px;display:block;}
-.cart-box .cart-count{color:white;font-size:11px;font-weight:800;display:block;}
-.cart-box .cart-price{color:rgba(255,255,255,.85);font-size:10px;font-weight:700;display:block;}
+.cart-box{background:var(--green);border-radius:14px 0 0 14px;padding:14px 10px 12px;text-align:center;box-shadow:-4px 0 20px rgba(0,0,0,.3);min-width:60px;}
+.cart-box .cart-count{color:white;font-size:13px;font-weight:800;display:block;margin-bottom:2px;}
+.cart-box .cart-price{color:rgba(255,255,255,.9);font-size:10px;font-weight:700;display:block;}
 
 /* CHAT WIDGET */
 #chat-widget{position:fixed;bottom:24px;right:16px;z-index:9990;display:flex;align-items:center;gap:8px;transform:translateZ(0);}
@@ -294,7 +293,7 @@ footer{background:var(--blue);color:white;margin-top:8px;}
 
 <!-- REVIEWS -->
 <div class="reviews-section reveal-section">
-  <div class="sec-wrap"><div class="sec-title"><h3>⭐ গ্রাহক রিভিউ</h3></div></div>
+  <div class="sec-wrap"><div class="sec-title sec-title-center" style="justify-content:center;"><h3>⭐ গ্রাহক রিভিউ</h3></div></div>
   <div class="sec-divider"></div>
   <div id="reviews-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 4px;"></div>
 </div>
@@ -342,11 +341,11 @@ footer{background:var(--blue);color:white;margin-top:8px;}
       <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
     </div>
   </div>
-  <div class="footer-bottom"><p>© ২০২৫ Astha আস্থা | বিশ্বাসের ঠিকানা</p></div>
+  <div class="footer-bottom"><p>© ২০২৬ Astha আস্থা | বিশ্বাসের ঠিকানা</p></div>
 </footer>
 
 <!-- CART WIDGET -->
-<div id="cart-widget" onclick="window.location.href='checkout.html'"><div class="cart-box"><svg class="cart-bag-icon" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 40 L8 100 L75 100 L85 40 Z" fill="white" opacity="0.95"/><path d="M8 100 L2 108 L80 108 L75 100 Z" fill="rgba(255,255,255,0.5)"/><path d="M85 40 L92 45 L82 108 L80 108 L75 100 L85 40 Z" fill="rgba(255,255,255,0.4)"/><path d="M30 40 Q30 18 46 18 Q62 18 62 40" stroke="white" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="30" cy="40" r="5" fill="white"/><circle cx="62" cy="40" r="5" fill="white"/><path d="M8 100 Q11 94 15 100" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none"/></svg><span class="cart-count" id="cart-count">০ টি</span><span class="cart-price" id="cart-price">৳ ০</span></div></div>
+<div id="cart-widget" onclick="window.location.href='checkout.html'"><div class="cart-box"><i class="fas fa-shopping-cart" style="color:white;font-size:24px;display:block;margin:0 auto 5px;"></i><span class="cart-count" id="cart-count">০ টি</span><span class="cart-price" id="cart-price">৳ ০</span></div></div>
 
 <!-- CHAT WIDGET -->
 <div id="chat-widget"><div class="chat-opts hidden" id="chat-opts"><a href="https://wa.me/8801XXXXXXXXX" class="chat-btn-w" style="background:#25D366;"><i class="fab fa-whatsapp"></i></a><a href="https://m.me/" class="chat-btn-w" style="background:#1877f2;"><i class="fab fa-facebook-messenger"></i></a><a href="tel:01XXXXXXXX" class="chat-btn-w" style="background:#02804a;"><i class="fas fa-phone"></i></a></div><button class="chat-toggle" id="chat-toggle"><i class="fas fa-headset"></i></button></div>
