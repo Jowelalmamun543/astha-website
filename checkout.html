@@ -56,7 +56,7 @@
             <label class="flex items-center gap-1 text-sm"><input type="radio" name="payment" value="rocket"> <i class="fas fa-rocket text-purple-500"></i> রকেট</label>
           </div>
         </div>
-        <button type="submit" class="w-full mt-5 bg-[#02804a] hover:bg-[#026c3e] text-white py-3 rounded-xl text-base font-bold shadow transition">✅ অর্ডার কনফার্ম করুন</button>
+        <button type="submit" id="submitBtn" class="w-full mt-5 bg-[#02804a] hover:bg-[#026c3e] text-white py-3 rounded-xl text-base font-bold shadow transition">✅ অর্ডার কনফার্ম করুন</button>
       </form>
     </div>
   </div>
@@ -213,39 +213,41 @@ async function submitOrder(event) {
   if (cart.length === 0) { alert('⚠️ আপনার কার্ট খালি। আগে পণ্য যোগ করুন।'); window.location.href = 'index.html'; return; }
   const submitBtn = document.getElementById('submitBtn');
   if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '⏳ অর্ডার পাঠানো হচ্ছে...'; }
-  let validItems = cart.filter(item => { let qty = parseFloat(item.qty); return !isNaN(qty) && qty > 0; });
-  if (validItems.length === 0) { alert('⚠️ দয়া করে কমপক্ষে একটি পণ্য অর্ডার করুন।'); return; }
-  const name = document.getElementById('name').value.trim();
-  const village = document.getElementById('village').value.trim();
-  const mobile = toEnglishDigits(document.getElementById('mobile').value.trim());
-  if (!name || !village || !mobile) { alert('⚠️ অনুগ্রহ করে নাম, গ্রাম ও মোবাইল নম্বর দিন।'); return; }
-  if (!/^01[3-9][0-9]{8}$/.test(mobile)) { alert('⚠️ সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন।'); return; }
-  const btn = document.getElementById('submitBtn');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ অর্ডার হচ্ছে...'; }
-  const orderData = {
-    id: Date.now(), status: 'pending',
-    district: document.getElementById('displayDistrict').innerText,
-    upazila: document.getElementById('displayUpazila').innerText,
-    union: document.getElementById('displayUnion').innerText,
-    name, father: document.getElementById('fatherName')?.value || '',
-    village, para: document.getElementById('para')?.value || '',
-    mobile, address: document.getElementById('address')?.value || '',
-    payment: document.querySelector('input[name="payment"]:checked')?.value || 'cash',
-    orderDate: new Date().toLocaleString('bn-BD'),
-    items: validItems.map(item => ({ name: item.name, qty: item.qty, unit: item.unit, pricePerUnit: item.pricePerUnit, total: Math.round(getItemTotal(item)) })),
-    subtotal: window._currentSubtotal || 0,
-    deliveryCharge: window._currentDelivery || 0,
-    total: '৳ ' + (window._currentTotal || 0)
-  };
-  sessionStorage.setItem('last_order', JSON.stringify(orderData));
-  localStorage.setItem('last_order_mobile', orderData.mobile);
-  const saved = await DB_saveOrder(orderData);
-  saveCart([]);
-  localStorage.removeItem('astha_cart');
-  sessionStorage.removeItem('db_cart');
-  if (!saved) alert('⚠️ ইন্টারনেট সমস্যা! অর্ডার লোকালি সেভ হয়েছে।');
-  if (submitBtn) { submitBtn.disabled = false; }
-  window.location.href = 'order-confirmation.html';
+  try {
+    let validItems = cart.filter(item => { let qty = parseFloat(item.qty); return !isNaN(qty) && qty > 0; });
+    if (validItems.length === 0) { alert('⚠️ দয়া করে কমপক্ষে একটি পণ্য অর্ডার করুন।'); if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '✅ অর্ডার কনফার্ম করুন'; } return; }
+    const name = document.getElementById('name').value.trim();
+    const village = document.getElementById('village').value.trim();
+    const mobile = toEnglishDigits(document.getElementById('mobile').value.trim());
+    if (!name || !village || !mobile) { alert('⚠️ অনুগ্রহ করে নাম, গ্রাম ও মোবাইল নম্বর দিন।'); if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '✅ অর্ডার কনফার্ম করুন'; } return; }
+    if (!/^01[3-9][0-9]{8}$/.test(mobile)) { alert('⚠️ সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন।'); if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '✅ অর্ডার কনফার্ম করুন'; } return; }
+    const orderData = {
+      id: Date.now(), status: 'pending',
+      district: document.getElementById('displayDistrict').innerText,
+      upazila: document.getElementById('displayUpazila').innerText,
+      union: document.getElementById('displayUnion').innerText,
+      name, father: document.getElementById('fatherName')?.value || '',
+      village, para: document.getElementById('para')?.value || '',
+      mobile, address: document.getElementById('address')?.value || '',
+      payment: document.querySelector('input[name="payment"]:checked')?.value || 'cash',
+      orderDate: new Date().toLocaleString('bn-BD'),
+      items: validItems.map(item => ({ name: item.name, qty: item.qty, unit: item.unit, pricePerUnit: item.pricePerUnit, total: Math.round(getItemTotal(item)) })),
+      subtotal: window._currentSubtotal || 0,
+      deliveryCharge: window._currentDelivery || 0,
+      total: '৳ ' + (window._currentTotal || 0)
+    };
+    sessionStorage.setItem('last_order', JSON.stringify(orderData));
+    localStorage.setItem('last_order_mobile', orderData.mobile);
+    const saved = await DB_saveOrder(orderData);
+    localStorage.removeItem('astha_cart');
+    sessionStorage.removeItem('db_cart');
+    if (!saved) alert('⚠️ ইন্টারনেট সমস্যা! অর্ডার লোকালি সেভ হয়েছে।');
+    window.location.href = 'order-confirmation.html';
+  } catch(err) {
+    console.error('Order error:', err);
+    alert('⚠️ অর্ডার দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '✅ অর্ডার কনফার্ম করুন'; }
+  }
 }
 function loadDeliveryInfo() {
   try {
